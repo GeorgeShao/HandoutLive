@@ -1,17 +1,11 @@
 <template>
-  <div>
-    <v-app-bar>
-      <v-app-bar-nav-icon @click="studentDrawer = true" />
-      <v-toolbar-title>TeacherTrainer</v-toolbar-title>
-      <v-spacer/>
-      <v-icon @click="messageDrawer = true">mdi-account</v-icon>
-    </v-app-bar>
-
-    <v-content style="height: 100vh">
+  <div style="height: 100vh; display: flex; flex-direction: column">
+    <TheAppBar />
+    <div style="flex-grow: 1">
       <div class="content">
         <v-navigation-drawer
           v-model="studentDrawer"
-          absolute
+          @click="studentDrawer = !studentDrawer"
         >
           <v-divider />
           <template v-slot:prepend>
@@ -42,8 +36,6 @@
         </v-sheet>
 
         <v-card width="200px">
-
-
           <v-card
             class="mx-auto"
             max-width="400"
@@ -82,30 +74,30 @@
         </v-card>
       </div>
 
-      <v-card-text style="height: 300px" class="grey lighten-5"></v-card-text>
-      <v-card-text style="height: 100px; position: relative">
-        <v-btn
-          absolute
-          dark
-          fab
-          top
-          left
-          color="blue"
-        >
-          <v-icon>mdi-upload</v-icon>
-        </v-btn>
-      </v-card-text>
-    </v-content>
+      <!--
+      <v-btn
+        absolute
+        dark
+        fab
+        bottom
+        left
+        color="blue"
+      >
+        <v-icon>mdi-upload</v-icon>
+      </v-btn>
+      -->
+    </div>
   </div>
 </template>
 <script>
   import DrawingCanvas from '../components/DrawingCanvas';
+  import TheAppBar from "../components/TheAppBar";
 
   export default {
     name: 'TeacherPage',
-    components: { DrawingCanvas },
+    components: {TheAppBar, DrawingCanvas },
     data: () => ({
-      studentDrawer: false,
+      studentDrawer: true,
       messageDrawer: false
     })
   }
