@@ -26,6 +26,12 @@ export default {
     canvas.style.height = '100%';
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
+
+    this.$socket.on('addLines', (lines) => {
+      lines.forEach((line) => {
+        this.paint(line.start, line.end);
+      });
+    });
   },
   methods: {
     paint(prevPos, curPos) {
