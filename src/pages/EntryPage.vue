@@ -25,7 +25,7 @@
           <v-card-actions>
             <v-btn color="success" @click="createRoom()">Create</v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="info" @click="joinRoom()">Join</v-btn>
+            <v-btn color="info" @click="joinRoom()">Connect</v-btn>
           </v-card-actions>
         </v-tab-item>
         <v-tab-item>
