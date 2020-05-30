@@ -5,7 +5,7 @@ import vuetify from './plugins/vuetify';
 import io from 'socket.io-client';
 
 Vue.config.productionTip = false
-Vue.prototype.socket = io(process.env.VUE_APP_SERVER_URL);
+Vue.prototype.$socket = io(process.env.VUE_APP_SERVER_URL);
 
 new Vue({
   router,
