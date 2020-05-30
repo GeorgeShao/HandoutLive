@@ -1,7 +1,5 @@
 <template>
-  <v-app style="height: 100vh; width: 100vw">
-    <router-view />
-  </v-app>
+  <router-view />
 </template>
 
 <script>

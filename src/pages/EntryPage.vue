@@ -1,5 +1,6 @@
 <template>
-  <v-card width="400" class="mx-auto mt-5">
+  <v-app>
+    <v-card width="400" class="ma-auto">
       <v-card-title>
         <h1 class="display-1">Welcome!</h1>
       </v-card-title>
@@ -15,6 +16,7 @@
         <v-btn color="info">Join</v-btn>
       </v-card-actions>
     </v-card>
+  </v-app>
 </template>
 
 <script>

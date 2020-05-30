@@ -1,6 +1,6 @@
 <template>
-  <v-app-bar>
-    <v-app-bar-nav-icon @click="studentDrawer = true" />
+  <v-app-bar app>
+    <v-app-bar-nav-icon @click="studentDrawer = !studentDrawer" />
     <v-toolbar-title>TeacherTrainer</v-toolbar-title>
     <v-spacer/>
     <v-icon>mdi-account</v-icon>
