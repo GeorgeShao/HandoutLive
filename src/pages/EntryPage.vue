@@ -4,23 +4,44 @@
       <v-card-title>
         <h1 class="display-1">Welcome!</h1>
       </v-card-title>
-      <v-card-text>
-        <v-form>
-          <v-text-field
-            label="Room Code"
-            prepend-icon="mdi-lock"
-            v-model="roomCode"
-          />
-        </v-form>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-btn color="success" @click="createRoom()">Create</v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="info" @click="joinRoom()">Join</v-btn>
-      </v-card-actions>
+      <v-tabs
+        fixed-tabs
+        color="blue"
+      >
+        <v-tab>
+          DESKTOP
+        </v-tab>
+        <v-tab>
+          MOBILE
+        </v-tab>
+        <v-tab-item>
+          <v-card-text>
+            <v-form>
+              <v-text-field label="Name" prepend-icon="mdi-face"/>
+              <v-text-field label="Room Code" prepend-icon="mdi-lock"/>
+            </v-form>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-btn color="success" @click="createRoom()">Create</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="info" @click="joinRoom()">Join</v-btn>
+          </v-card-actions>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card-text>
+            <v-form>
+              <v-text-field label="Secret Key" prepend-icon="mdi-lock"/>
+            </v-form>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="info">Join</v-btn>
+          </v-card-actions>
+            </v-tab-item>
+            </v-tabs>
     </v-card>
-    <v-btn color="info" to="/entrymobilepage">Connect Phone</v-btn>
   </v-app>
 </template>
 
