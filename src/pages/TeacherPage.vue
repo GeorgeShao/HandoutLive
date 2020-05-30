@@ -1,7 +1,37 @@
 <template>
   <v-app>
-    <TheAppBar />
-    <TheStudentDrawer />
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar" />
+      <v-toolbar-title>TeacherTrainer</v-toolbar-title>
+      <v-spacer/>
+      <v-icon>mdi-account</v-icon>
+    </v-app-bar>
+
+    <v-navigation-drawer app v-model="studentSidebar">
+      <v-divider />
+      <template v-slot:prepend>
+        <v-list-item two-line>
+          <v-list-item-content>
+            <v-list-item-title>Room Code: MAH IEM</v-list-item-title>
+            <v-list-item-subtitle>Share this with your students</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+
+      <v-divider />
+
+      <v-list-item two-line>
+        <v-list-item-avatar>
+          <img src="https://randomuser.me/api/portraits/women/81.jpg">
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title>Jane Smith</v-list-item-title>
+          <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-navigation-drawer>
+
     <v-content>
       <DrawingCanvas />
       <v-card width="200px">
@@ -57,16 +87,14 @@
       -->
 </template>
 <script>
-  import TheStudentDrawer from "../components/TheStudentsSidebar";
   import DrawingCanvas from '../components/DrawingCanvas';
-  import TheAppBar from "../components/TheAppBar";
 
   export default {
     name: 'TeacherPage',
-    components: {TheAppBar, DrawingCanvas, TheStudentDrawer },
+    components: { DrawingCanvas },
     data: () => ({
-      studentDrawer: true,
-      messageDrawer: false
+      studentSidebar: false,
+      messageSidebar: false
     })
   }
 </script>
