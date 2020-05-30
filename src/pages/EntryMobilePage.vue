@@ -6,23 +6,21 @@
       </v-card-title>
       <v-card-text>
         <v-form>
-          <v-text-field label="Room Code" prepend-icon="mdi-lock"/>
+          <v-text-field label="Secret Key" prepend-icon="mdi-lock"/>
         </v-form>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-btn color="success" to="/teacher">Create</v-btn>
         <v-spacer></v-spacer>
         <v-btn color="info">Join</v-btn>
       </v-card-actions>
     </v-card>
-    <v-btn color="info" to="/entrymobilepage">Connect Phone</v-btn>
   </v-app>
 </template>
 
 <script>
 export default {
-  name: 'EntryPage'
+  name: 'EntryMobilePage'
 }
 </script>
 

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import TeacherPage from '../pages/TeacherPage.vue'
 import EntryPage from '../pages/EntryPage.vue'
+import EntryMobilePage from '../pages/EntryMobilePage.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ Vue.use(VueRouter)
     path: '/teacher',
     name: 'TeacherPage',
     component: TeacherPage
+  },
+  {
+    path: '/entrymobilepage',
+    name: 'EntryMobilePage',
+    component: EntryMobilePage
   },
   {
     path: '/about',
