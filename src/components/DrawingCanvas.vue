@@ -1,7 +1,5 @@
 <template>
   <canvas
-    width="100%"
-    height="200px"
     ref="canvas"
     @mousedown="onMouseDown"
     @mousemove="onMouseMove"
