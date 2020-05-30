@@ -1,4 +1,20 @@
 {
-  "rooms": [],
+  "rooms": [
+    {
+      "code": "aa",
+      "students": [],
+      "teacherId": "fcHj-rlbLCkUs5UEAAAG"
+    },
+    {
+      "code": "a",
+      "students": [],
+      "teacherId": "9g0kbVzY9O6kgFdYAAAH"
+    },
+    {
+      "code": "aaa",
+      "students": [],
+      "teacherId": "VN0vtRKg83iwdMoLAAAA"
+    }
+  ],
   "users": []
 }
