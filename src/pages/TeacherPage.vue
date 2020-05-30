@@ -32,7 +32,7 @@
       </v-list-item>
     </v-navigation-drawer>
 
-    <v-content>
+    <v-content style="overflow: hidden">
       <div class="wrapper">
         <DrawingCanvas />
         <v-sheet>
