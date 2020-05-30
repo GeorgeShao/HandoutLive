@@ -1,7 +1,5 @@
 <template>
   <v-app>
-    <!-- <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link> -->
     <v-card width="400" class="mx-auto mt-5">
       <v-card-title>
         <h1 class="display-1">Welcome!</h1>
@@ -13,7 +11,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-btn color="success">Create</v-btn>
+        <v-btn color="success" to="/teacher">Create</v-btn>
         <v-spacer></v-spacer>
         <v-btn color="info">Join</v-btn>
       </v-card-actions>
