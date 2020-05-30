@@ -63,8 +63,6 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-spacer />
-
             <v-text-field
               label="Solo"
               placeholder="Placeholder"
