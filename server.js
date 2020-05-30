@@ -27,7 +27,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createRoom', (roomCode, ack) => {
-    console.log(`User ${socket.id} creating room ${roomCode}...`);
     if (db.get('rooms').find({ code: roomCode }).value() !== undefined) {
       return ack({success: false, message: "Room already exists."});
     }

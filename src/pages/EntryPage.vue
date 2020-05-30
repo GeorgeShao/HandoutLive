@@ -44,13 +44,14 @@ export default {
     },
     createRoom() {
       this.$socket.emit('createRoom', this.roomCode, (result) => {
+        console.log('hi');
         if (!result.success) return console.log(result.message);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(true);
         this.$router.push({ path: '/teacher'});
       })
     },
-    ...mapActions(['setRoomCode'])
+    ...mapActions(['setRoomCode', 'setIsTeacher'])
   }
 }
 </script>
