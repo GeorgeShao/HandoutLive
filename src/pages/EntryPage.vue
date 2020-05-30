@@ -20,6 +20,7 @@
         <v-btn color="info" @click="joinRoom()">Join</v-btn>
       </v-card-actions>
     </v-card>
+    <v-btn color="info" to="/entrymobilepage">Connect Phone</v-btn>
   </v-app>
 </template>
 
