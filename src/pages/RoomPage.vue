@@ -1,15 +1,15 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar" v-if="isTeacher" />
+      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar" />
       <v-toolbar-title>TeacherTrainer</v-toolbar-title>
       <v-spacer />
       <v-icon>mdi-account</v-icon>
     </v-app-bar>
 
-    <v-navigation-drawer app v-model="studentSidebar" v-if="isTeacher">
+    <v-navigation-drawer app v-model="studentSidebar">
       <v-list>
-        <v-subheader>
+        <v-subheader v-if="isTeacher">
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title>Room Code: {{roomCode}}</v-list-item-title>
@@ -18,23 +18,57 @@
           </v-list-item>
         </v-subheader>
 
+        <v-subheader>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>Connect Code: {{ connectCode }}</v-list-item-title>
+              <v-list-item-subtitle>Use this code to connect to a device. Do not share this code.</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-subheader>
+
         <v-divider />
 
-        <v-list-item-group v-model="currentStudentId">
+        <v-list-item-group
+          v-if="isTeacher"
+          v-model="currentStudentPos"
+          mandatory
+        >
           <v-list-item v-for="(student, index) in students" :key="index">
             <v-list-item-content>
               <v-list-item-title>{{ student.name }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
+
+        <v-list-item-group
+          v-else
+          v-model="currentStudentPos"
+          mandatory
+        >
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Teacher</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{ userName + ' (YOU)' }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
+
       <p v-if="students.length === 0" class="px-5">No students have joined yet...</p>
     </v-navigation-drawer>
 
     <v-content style="overflow: hidden">
       <div class="wrapper">
 
-        <DrawingCanvas ref="drawingCanvas" />
+        <DrawingCanvas
+          ref="drawingCanvas"
+          :disabled="isTeacherCanvas || !isTeacher && currentStudentPos === 0"
+        />
 
         <v-sheet>
           <v-card
@@ -74,6 +108,53 @@
         <v-icon>mdi-upload</v-icon>
       </v-btn>
 
+      <v-speed-dial
+        v-model="fab"
+        :top="top"
+        :bottom="bottom"
+        :right="right"
+        :left="left"
+        :direction="direction"
+        :open-on-hover="hover"
+        :transition="transition"
+      >
+        <template v-slot:activator>
+          <v-btn
+            v-model="fab"
+            color="blue darken-2"
+            dark
+            fab
+          >
+            <v-icon v-if="fab">mdi-close</v-icon>
+            <v-icon v-else>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+        <v-btn
+          fab
+          dark
+          small
+          color="green"
+        >
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="indigo"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="red"
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </v-speed-dial>
+
     </v-content>
   </v-app>
 </template>
@@ -89,7 +170,8 @@ export default {
       studentSidebar: false,
       messageSidebar: false,
       messageField: "",
-      currentStudentId: this.$store.state.currentStudentId,
+      currentStudentPos: 0,
+      isTeacherCanvas: false,
       messages: [
         {
           id: 0,
@@ -101,10 +183,11 @@ export default {
   },
   created() {
     if (this.students.length === 0) {
-      //this.$router.push({ path: '/' });
+      // this.$router.push({ path: '/' });
     }
   },
   mounted() {
+    this.setCurrentStudentId(this.getTeacherId());
     this.$socket
       .on('studentJoined', (student) => {
         this.addStudent(student);
@@ -118,11 +201,18 @@ export default {
       })
       .on('sendMessage', (message) => {
         this.messages.push(message);
+      })
+      .on('changedCanvas', ({studentPos}) => {
+        if (!this.isTeacher) {
+          this.isTeacherCanvas = studentPos === 0;
+        }
+
+        this.currentStudentPos = studentPos;
       });
   },
   computed: {
-    ...mapState(['students', 'isTeacher', 'roomCode', 'userName']),
-    ...mapGetters(['getLinesByStudentId'])
+    ...mapState(['students', 'isTeacher', 'roomCode', 'userName', 'connectCode']),
+    ...mapGetters(['getLinesByStudentId', 'getTeacherId']),
   },
   methods: {
     ...mapActions(['addStudent', 'removeStudent', 'setCurrentStudentId', 'resetState']),
@@ -155,14 +245,15 @@ export default {
     }
   },
   watch: {
-    currentStudentId(studentPos) {
-      const studentId = this.students[studentPos].id;
-      const drawingCanvas = this.$refs.drawingCanvas;
+    currentStudentPos(studentPos) {
       const ctx = this.$refs.drawingCanvas.$refs.canvas.getContext('2d');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      const lines = this.getLinesByStudentId(studentId);
+      const drawingCanvas = this.$refs.drawingCanvas;
+      const id = this.students[studentPos].id;
+      const lines = this.getLinesByStudentId(id);
+      this.$socket.emit('changedCanvas', {lines, studentPos});
       lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
-      this.setCurrentStudentId(studentId);
+      this.setCurrentStudentId(id);
     }
   }
 }

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'DrawingCanvas',
@@ -37,9 +37,9 @@ export default {
     canvas.height = canvas.offsetHeight;
 
     this.$socket.on('addTeacherLines', (lines) => {
-      lines.forEach((line) => {
-        this.paint(line.start, line.stop);
-      });
+      console.log(lines);
+      this.addLines({ id: this.getTeacherId(), lines });
+      this.paintLines(lines);
     });
 
     this.$socket.on('addTeacherImage', (image) => {
@@ -47,15 +47,16 @@ export default {
     });
 
     this.$socket.on('addStudentLines', (studentId, lines) => {
-      this.addStudentLines({
-        studentId,
-        lines
-      })
-
+      this.addLines({ id: studentId, lines });
       if (this.currentStudentId === studentId) {
-        lines.forEach((line) => {
-          this.paint(line.start, line.stop);
-        })
+        this.paintLines(lines);
+      }
+    });
+
+    this.$socket.on('changedCanvas', (lines) => {
+      if (this.isTeacher) {
+        this.clearCanvas();
+        this.paintLines(lines);
       }
     });
   },
@@ -66,6 +67,11 @@ export default {
       ctx.moveTo(prevPos.x, prevPos.y);
       ctx.lineTo(curPos.x, curPos.y);
       ctx.stroke();
+    },
+    paintLines(lines) {
+      lines.forEach((line) => {
+        this.paint(line.start, line.stop);
+      })
     },
     onMouseDown(event) {
       if (this.disabled) return;
@@ -90,7 +96,13 @@ export default {
       if (this.disabled) return;
       if (this.isPainting) {
         this.isPainting = false;
-        this.addLines();
+        this.addLines({ id: this.currentStudentId, lines: this.linesBuffer });
+        if (this.isTeacher) {
+          this.$socket.emit('addTeacherLines', this.currentStudentId, this.linesBuffer);
+        } else {
+          this.$socket.emit('addStudentLines', this.userId, this.linesBuffer);
+        }
+        this.linesBuffer = [];
       }
     },
     setCanvasContext() {
@@ -100,14 +112,6 @@ export default {
       ctx.strokeStyle = this.lineColor;
       ctx.lineWidth = this.lineWidth;
       return ctx;
-    },
-    async addLines() {
-      if (this.isTeacher) {
-        this.$socket.emit('addTeacherLines', this.currentStudentId, this.linesBuffer);
-      } else {
-        this.$socket.emit('addStudentLines', this.$socket.id, this.linesBuffer);
-      }
-      this.linesBuffer = [];
     },
     uploadImage(url) {
       const ctx = this.setCanvasContext();
@@ -122,9 +126,12 @@ export default {
       const ctx = this.setCanvasContext();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     },
-    ...mapActions(['addStudentLines'])
+    ...mapActions(['addLines']),
   },
-  computed: mapState(['isTeacher', 'currentStudentId'])
+  computed: {
+    ...mapState(['isTeacher', 'currentStudentId', 'userId']),
+    ...mapGetters(['getTeacherId'])
+  },
 }
 </script>
 
