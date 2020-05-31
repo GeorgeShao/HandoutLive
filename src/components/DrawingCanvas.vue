@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'DrawingCanvas',
@@ -29,29 +29,38 @@ export default {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    this.$socket.on('addLines', (lines) => {
+    this.$socket.on('addTeacherLines', (lines) => {
       lines.forEach((line) => {
-        this.paint(line.start, line.end);
+        this.paint(line.start, line.stop);
       });
+    });
+
+    this.$socket.on('addStudentLines', (studentId, lines) => {
+      this.addStudentLines({
+        studentId,
+        lines
+      })
+
+      if (this.currentStudentId === studentId) {
+        lines.forEach((line) => {
+          this.paint(line.start, line.stop);
+        })
+      }
     });
   },
   methods: {
     paint(prevPos, curPos) {
+      console.log(prevPos, curPos);
       const ctx = this.setCanvasContext();
       ctx.beginPath();
       ctx.moveTo(prevPos.x, prevPos.y);
       ctx.lineTo(curPos.x, curPos.y);
       ctx.stroke();
-      this.prevPos = { x: curPos.x, y: curPos.y };
     },
     onMouseDown(event) {
       const { offsetX, offsetY } = event;
       this.isPainting = true;
       this.prevPos = { x: offsetX, y: offsetY };
-      this.linesBuffer.push({
-        start: { ...this.prevPos },
-        stop: { ...this.prevPos }
-      });
     },
     onMouseMove(event) {
       if (!this.isPainting) return;
@@ -63,6 +72,7 @@ export default {
       };
       this.linesBuffer.push(line);
       this.paint(this.prevPos, offsetData);
+      this.prevPos = { x, y };
     },
     endPaintEvent() {
       if (this.isPainting) {
@@ -98,7 +108,8 @@ export default {
       const canvas = this.$refs.canvas;
       const ctx = this.setCanvasContext();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    },
+    ...mapActions(['addStudentLines'])
   },
   computed: mapState(['isTeacher', 'currentStudentId'])
 }

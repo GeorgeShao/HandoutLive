@@ -1,35 +1,148 @@
 {
   "rooms": [
     {
-      "code": "",
-      "students": [
-        {
-          "id": "jK8JMR6hFU-PipwfAAAd",
-          "roomCode": ""
-        },
-        {
-          "id": "WITKX0Z52GF-Q0P5AAAh",
-          "roomCode": ""
-        }
+      "code": ";",
+      "studentIds": [
+        "MBlDo7nvzQfGca6QAAAI"
       ],
-      "teacherId": "jK8JMR6hFU-PipwfAAAd"
+      "teacherId": "EpjmaxlNRBiOEjtwAAAJ"
     },
     {
-      "code": {
-        "roomCode": "",
-        "userName": ""
-      },
-      "students": [
-        {
-          "id": "N8mljMlYdY-ICYc-AAAk",
-          "roomCode": {
-            "roomCode": "",
-            "userName": ""
-          }
-        }
+      "code": "kk",
+      "studentIds": [
+        "JggsInZ_vgkHhty6AAAH"
       ],
-      "teacherId": "N8mljMlYdY-ICYc-AAAk"
+      "teacherId": "-eER5JaN6sZio6KwAAAG"
+    },
+    {
+      "code": "ka",
+      "studentIds": [
+        "nuYkMAeB6t8TH9iZAAAD"
+      ],
+      "teacherId": "Ll1AEIjzeaosf36iAAAC"
+    },
+    {
+      "code": "ai",
+      "studentIds": [],
+      "teacherId": "Bj0vHrJv4sOcjSkaAAAE"
+    },
+    {
+      "code": "dd",
+      "studentIds": [
+        "N2qDTDx0kcVZ0rHqAAAY"
+      ],
+      "teacherId": "P_mAi9OpVxUSZvphAAAZ"
+    },
+    {
+      "code": "b",
+      "studentIds": [
+        "IIpFO9IXroGT7FRKAAAE"
+      ],
+      "teacherId": "e58LQcV3Vyc--6znAAAD"
     }
   ],
-  "users": []
+  "users": [
+    {
+      "id": "EpjmaxlNRBiOEjtwAAAJ",
+      "name": ";",
+      "roomCode": ";",
+      "deviceId": ""
+    },
+    {
+      "id": "BWQdZ-YRnMQMLct2AAAC",
+      "name": "aak",
+      "roomCode": "aak",
+      "deviceId": ""
+    },
+    {
+      "id": "-eER5JaN6sZio6KwAAAG",
+      "name": "kk",
+      "roomCode": "kk",
+      "deviceId": ""
+    },
+    {
+      "id": "Ll1AEIjzeaosf36iAAAC",
+      "name": "ka",
+      "roomCode": "ka",
+      "deviceId": ""
+    },
+    {
+      "id": "JHffHK1VfoCQnkiBAAAC",
+      "name": "aka",
+      "roomCode": "aka",
+      "deviceId": ""
+    },
+    {
+      "id": "Bj0vHrJv4sOcjSkaAAAE",
+      "name": "ai",
+      "roomCode": "ai",
+      "deviceId": ""
+    },
+    {
+      "id": "4OSCdHUG5RJOYlVoAAAH",
+      "name": "kao",
+      "roomCode": "kao",
+      "deviceId": ""
+    },
+    {
+      "id": "L8yUMJgohZIsTATeAAAI",
+      "name": "kaoe",
+      "roomCode": "kaoe",
+      "deviceId": ""
+    },
+    {
+      "id": "KePQS78aYUybnOE3AAAL",
+      "name": "akak",
+      "roomCode": "akak",
+      "deviceId": ""
+    },
+    {
+      "id": "jFspWzr9FGphN2JcAAAN",
+      "name": "a",
+      "roomCode": "kka",
+      "deviceId": ""
+    },
+    {
+      "id": "TdsNN7_34mp2HxckAAAO",
+      "name": "kkaa",
+      "roomCode": "kkaa",
+      "deviceId": ""
+    },
+    {
+      "id": "Zm6JOt13-BsON8_UAAAR",
+      "name": "iai",
+      "roomCode": "iai",
+      "deviceId": ""
+    },
+    {
+      "id": "xqh6p7mq9Tw3ktqWAAAT",
+      "name": "h",
+      "roomCode": "h",
+      "deviceId": ""
+    },
+    {
+      "id": "MllPoevVlavITSNVAAAU",
+      "name": ".",
+      "roomCode": ".",
+      "deviceId": ""
+    },
+    {
+      "id": "P_mAi9OpVxUSZvphAAAZ",
+      "name": "dd",
+      "roomCode": "dd",
+      "deviceId": ""
+    },
+    {
+      "id": "hrVTLtpKan04EgDTAAAB",
+      "name": "x",
+      "roomCode": "x",
+      "deviceId": ""
+    },
+    {
+      "id": "e58LQcV3Vyc--6znAAAD",
+      "name": "b",
+      "roomCode": "b",
+      "deviceId": ""
+    }
+  ]
 }

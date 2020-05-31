@@ -25,7 +25,7 @@
           <v-card-actions>
             <v-btn color="success" @click="createRoom()">Create</v-btn>
             <v-spacer></v-spacer>
-            <p id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</p>
+            <george-coded-this-dont-question-it-but-it-works class="mx-auto" id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</george-coded-this-dont-question-it-but-it-works>
             <v-spacer></v-spacer>
             <v-btn color="info" @click="joinRoom()">Join</v-btn>
           </v-card-actions>
@@ -39,10 +39,10 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="info" @click="connectMobile()">Connect</v-btn>
+            <v-btn color="info">Connect</v-btn>
           </v-card-actions>
-            </v-tab-item>
-            </v-tabs>
+        </v-tab-item>
+      </v-tabs>
     </v-card>
   </v-app>
 </template>
@@ -62,13 +62,15 @@ export default {
         roomCode: this.roomCode,
         userName: this.userName
       }, (result) => {
-        // TODO DISPLAY ERROR MESSAGES IN THE FORM
-        if (!result.success) return console.log(result.message);
+        if (!result.success){
+          var invalid_room_code_msg_box = document.getElementById("invalid_room_code_msg");
+          invalid_room_code_msg_box.style.display = "block";
+          return console.log(result.message);
+        }
+        this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(false);
         this.$router.push({ path: '/room' });
-        var invalid_room_code_msg_box = document.getElementById("invalid_room_code_msg");
-        invalid_room_code_msg_box.style.display = "block";
       });
     },
     createRoom() {
@@ -77,16 +79,18 @@ export default {
         userName: this.userName
       }, (result) => {
         if (!result.success) return console.log(result.message);
+        this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(true);
+        this.addStudent({
+          id: this.$socket.id,
+          name: this.userName
+        })
         this.$router.push({ path: '/room'});
       })
     },
-    connectMobile() {
-      this.$router.push({path: '/mobile'});
-    },
-    ...mapActions(['setRoomCode', 'setIsTeacher'])
-  },
+    ...mapActions(['setRoomCode', 'setIsTeacher', 'setUserName', 'addStudent'])
+  }
 }
 </script>
 

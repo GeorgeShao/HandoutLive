@@ -20,18 +20,7 @@
 
         <v-divider />
 
-        <v-list-item-group value="currentStudentId" @input="setCurrentStudent">
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>YOU</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item v-if="students.length === 0">
-            <v-list-item-content>
-              No students have joined yet...
-            </v-list-item-content>
-          </v-list-item>
+        <v-list-item-group v-model="currentStudentId">
           <v-list-item v-for="(student, index) in students" :key="index">
             <v-list-item-content>
               <v-list-item-title>{{ student.name }}</v-list-item-title>
@@ -39,12 +28,13 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+      <p v-if="students.length === 0" class="px-5">No students have joined yet...</p>
     </v-navigation-drawer>
 
     <v-content style="overflow: hidden">
       <div class="wrapper">
 
-        <DrawingCanvas />
+        <DrawingCanvas ref="drawingCanvas" />
 
         <v-sheet>
           <v-card
@@ -92,7 +82,6 @@
         style="margin-bottom: 40px"
         color="blue"
         @click="openUploadFileDialog()"
-        v-show="currentStudentId"
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
@@ -105,12 +94,15 @@ import DrawingCanvas from '../components/DrawingCanvas';
 import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: 'TeacherPage',
+  name: 'RoomPage',
   components: { DrawingCanvas },
-  data: () => ({
-    studentSidebar: false,
-    messageSidebar: false,
-  }),
+  data() {
+    return {
+      studentSidebar: false,
+      messageSidebar: false,
+      currentStudentId: this.$store.state.currentStudentId
+    };
+  },
   mounted() {
     this.$socket
       .on('studentJoined', (student) => {
@@ -124,14 +116,11 @@ export default {
       });
   },
   computed: {
-    ...mapState(['currentStudentId', 'students', 'isTeacher']),
+    ...mapState(['students', 'isTeacher']),
     ...mapGetters(['getLinesByStudentId'])
   },
   methods: {
-    ...mapActions(['addStudent', 'removeStudent']),
-    setCurrentStudent(student) {
-      console.log(student);
-    },
+    ...mapActions(['addStudent', 'removeStudent', 'setCurrentStudentId']),
     openUploadFileDialog() {
       var fileSelector = document.createElement('input');
       fileSelector.setAttribute('type', 'file');
@@ -146,11 +135,14 @@ export default {
     },
   },
   watch: {
-    currentStudentId(studentId) {
-      const ctx = this.$refs.canvas.getContext('2d');
+    currentStudentId(studentPos) {
+      const studentId = this.students[studentPos].id;
+      const drawingCanvas = this.$refs.drawingCanvas;
+      const ctx = this.$refs.drawingCanvas.$refs.canvas.getContext('2d');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       const lines = this.getLinesByStudentId(studentId);
-      lines.forEach(line => this.paint(line.start, line.stop));
+      lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
+      this.setCurrentStudentId(studentId);
     }
   }
 }
