@@ -82,7 +82,6 @@
           </v-card>
         </v-sheet>
       </div>
-
       <v-btn
         v-if="isTeacher"
         absolute
@@ -93,6 +92,7 @@
         style="margin-bottom: 40px"
         color="blue"
         @click="openUploadFileDialog()"
+        v-show="currentStudentId"
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
@@ -137,9 +137,11 @@ export default {
       fileSelector.setAttribute('type', 'file');
       fileSelector.click();
       fileSelector.addEventListener("change", handleFiles, false);
+      const canvas = this.$refs.drawingCanvas;
       function handleFiles() {
         var fileData = this.files[0];
-        console.log("fileData:", fileData)
+        canvas.uploadImage(URL.createObjectURL(fileData));
+        console.log("fileData:", fileData);
       }
     },
   },
