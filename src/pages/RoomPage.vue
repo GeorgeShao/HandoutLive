@@ -107,65 +107,7 @@
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
-
-      <v-speed-dial
-        v-model="fab"
-      >
-        <template v-slot:activator>
-          <v-btn
-            fab
-            v-if="isTeacher"
-            absolute
-            dark
-            style="margin-bottom: 110px"
-            color="blue"
-            bottom
-            left
-            :direction="direction"
-            :open-on-hover="hover"
-            :transition="transition"
-          >
-            <v-icon v-if="fab">mdi-close</v-icon>
-            <v-icon v-else>mdi-pencil</v-icon>
-          </v-btn>
-        </template>
-        <v-btn
-          fab
-          dark
-          small
-          color="black"
-        >
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="white"
-        >
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="red"
-        >
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="green"
-        >
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="blue"
-        >
-        </v-btn>
-      </v-speed-dial>
-
+      
     </v-content>
   </v-app>
 </template>
