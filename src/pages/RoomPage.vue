@@ -12,7 +12,7 @@
         <v-subheader>
           <v-list-item two-line>
             <v-list-item-content>
-              <v-list-item-title>Room Code: MAH IEM</v-list-item-title>
+              <v-list-item-title>Room Code: {{roomCode}}</v-list-item-title>
               <v-list-item-subtitle>Share this with your students</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -122,7 +122,7 @@ export default {
       });
   },
   computed: {
-    ...mapState(['students', 'isTeacher']),
+    ...mapState(['students', 'isTeacher', 'roomCode']),
     ...mapGetters(['getLinesByStudentId'])
   },
   methods: {
