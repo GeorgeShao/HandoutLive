@@ -45,18 +45,19 @@ io.on('connection', (socket) => {
     const user = db.get('users').find({id: userId});
     const roomCode = user.get('roomCode').value();
     const teacherId = db.get('rooms').find({code: roomCode}).get('teacherId').value();
-    socket.to(teacherId).emit('addStudentLines', userId, lines);
     const userDeviceId = user.get('deviceId').value();
-    socket.to(userDeviceId).emit('addTeacherLines', lines);
     const teacherDeviceId = db.get('users').find({ id: teacherId }).get('deviceId').value();
+    socket.to(userId).emit('addStudentLines', userId, lines);
+    socket.to(teacherId).emit('addStudentLines', userId, lines);
+    socket.to(userDeviceId).emit('addTeacherLines', lines);
     socket.to(teacherDeviceId).emit('addTeacherLines', lines);
   });
 
   socket.on('addTeacherLines', (userId, lines) => {
-    const socketId = getUserId();
-    if (userId === socketId) {
+    const teacherId = getUserId();
+    if (userId === teacherId) {
       const roomCode = db.get('users').find({ id: userId }).get('roomCode').value();
-      // only send teacher lines to those focused on the teacher
+      // only send teacher lines to the teacher canvas
       return socket.to(roomCode).emit('addStudentLines', userId, lines);
     }
     const deviceId = db.get('users').find({id: userId}).get('deviceId').value();
@@ -74,9 +75,9 @@ io.on('connection', (socket) => {
     socket.to(roomCode).emit('sendMessage', message);
   });
 
-  socket.on('changedCanvas', (lines) => {
+  socket.on('changedCanvas', ({ lines, studentPos }) => {
     const deviceId = db.get('users').find({ id: socket.id }).get('deviceId').value();
-    socket.to(deviceId).emit('repaintCanvas', lines);
+    socket.to(deviceId).emit('changedCanvas', { lines, studentPos });
   });
 
   socket.on('createRoom', ({userName, roomCode}, ack) => {

@@ -67,7 +67,7 @@
 
         <DrawingCanvas
           ref="drawingCanvas"
-          :disabled="!isTeacher && currentStudentPos === 0"
+          :disabled="isTeacherCanvas || !isTeacher && currentStudentPos === 0"
         />
 
         <v-sheet>
@@ -124,6 +124,7 @@ export default {
       messageSidebar: false,
       messageField: "",
       currentStudentPos: 0,
+      isTeacherCanvas: false,
       messages: [
         {
           id: 0,
@@ -153,6 +154,13 @@ export default {
       })
       .on('sendMessage', (message) => {
         this.messages.push(message);
+      })
+      .on('changedCanvas', ({studentPos}) => {
+        if (!this.isTeacher) {
+          this.isTeacherCanvas = studentPos === 0;
+        }
+
+        this.currentStudentPos = studentPos;
       });
   },
   computed: {
@@ -196,7 +204,7 @@ export default {
       const drawingCanvas = this.$refs.drawingCanvas;
       const id = this.students[studentPos].id;
       const lines = this.getLinesByStudentId(id);
-      this.$socket.emit('changedCanvas', lines);
+      this.$socket.emit('changedCanvas', {lines, studentPos});
       lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
       this.setCurrentStudentId(id);
     }

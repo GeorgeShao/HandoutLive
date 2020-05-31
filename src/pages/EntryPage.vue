@@ -72,6 +72,7 @@ export default {
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(false);
         this.setUserId(this.$socket.id);
+        this.setConnectCode(result.connectCode);
         this.addStudent({
           id: result.teacherId,
           name: result.teacherName

@@ -53,9 +53,11 @@ export default {
       }
     });
 
-    this.$socket.on('repaintCanvas', (lines) => {
-      this.clearCanvas();
-      this.paintLines(lines);
+    this.$socket.on('changedCanvas', (lines) => {
+      if (this.isTeacher) {
+        this.clearCanvas();
+        this.paintLines(lines);
+      }
     });
   },
   methods: {
