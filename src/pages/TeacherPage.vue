@@ -1,14 +1,14 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar" />
+      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar"/>
       <v-toolbar-title>TeacherTrainer</v-toolbar-title>
       <v-spacer/>
       <v-icon>mdi-account</v-icon>
     </v-app-bar>
 
     <v-navigation-drawer app v-model="studentSidebar">
-      <v-divider />
+      <v-divider/>
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-content>
@@ -18,7 +18,7 @@
         </v-list-item>
       </template>
 
-      <v-divider />
+      <v-divider/>
 
       <v-list-item two-line>
         <v-list-item-avatar>
@@ -34,7 +34,7 @@
 
     <v-content style="overflow: hidden">
       <div class="wrapper">
-        <DrawingCanvas />
+        <DrawingCanvas ref="drawingCanvas"/>
         <v-sheet>
           <v-card
             class="mx-auto"
@@ -71,7 +71,7 @@
           </v-card>
         </v-sheet>
       </div>
-
+      <input ref="fileInput" type="file" :onchange="uploadImage" style="display:none"/>
       <v-btn
         absolute
         dark
@@ -80,6 +80,7 @@
         left
         style="margin-bottom: 40px"
         color="blue"
+        @click="uploadImage()"
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
@@ -91,11 +92,30 @@
 
   export default {
     name: 'TeacherPage',
-    components: { DrawingCanvas },
+    components: {DrawingCanvas},
     data: () => ({
       studentSidebar: false,
       messageSidebar: false
-    })
+    }),
+    methods: {
+      uploadImage() {
+        const file = this.$refs.fileInput;
+
+        const reader = new FileReader();
+        reader.addEventListener(
+          "load",
+          () => {
+            this.$refs.drawingCanvas.uploadImage(reader.result);
+          },
+          false
+        );
+        if (file.files[0]) {
+          reader.readAsDataURL(file.files[0]);
+        }
+
+        file.click();
+      }
+    }
   }
 </script>
 
