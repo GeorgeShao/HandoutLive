@@ -77,7 +77,7 @@
             height="100%"
             tile
           >
-            <v-list-item v-for="message in messages" :key="message.id + message.contents + message.sender" two-line>
+            <v-list-item v-for="(message, index) in messages" :key="index" two-line>
               <v-list-item-content>
                 <v-list-item-title>{{message.sender}}</v-list-item-title>
                 <v-list-item-subtitle>{{message.contents}}</v-list-item-subtitle>
