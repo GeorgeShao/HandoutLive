@@ -1,0 +1,78 @@
+{
+  "rooms": [
+    {
+      "code": "ahd",
+      "studentIds": [],
+      "teacherId": "u4E08FwE_kDpwm2IAAAD"
+    },
+    {
+      "code": "'qjk",
+      "studentIds": [],
+      "teacherId": "fgKQyROVoAIzjjCAAAAH"
+    },
+    {
+      "code": "j",
+      "studentIds": [
+        "vLcmK_OL0H9Vdgg1AAAD"
+      ],
+      "teacherId": "r6t5GlLZ6RS-OfOpAAAC"
+    },
+    {
+      "code": "jkk",
+      "studentIds": [
+        "KhAzYfrm0LsMh8RdAAAF"
+      ],
+      "teacherId": "RfjZoXHoM9TqH8TEAAAE"
+    }
+  ],
+  "users": [
+    {
+      "id": "1aSlS20Abur6iqCVAAAC",
+      "name": "a",
+      "roomCode": "a",
+      "deviceId": ""
+    },
+    {
+      "id": "u4E08FwE_kDpwm2IAAAD",
+      "name": "a",
+      "roomCode": "ahd",
+      "deviceId": ""
+    },
+    {
+      "id": "YDtyePEqkVF-D46nAAAF",
+      "name": "aoeu",
+      "roomCode": "aaaoeu",
+      "deviceId": ""
+    },
+    {
+      "id": "9npSrCp8TjP-N5I4AAAG",
+      "name": "k",
+      "roomCode": "k",
+      "deviceId": ""
+    },
+    {
+      "id": "fgKQyROVoAIzjjCAAAAH",
+      "name": "aoe",
+      "roomCode": "'qjk",
+      "deviceId": ""
+    },
+    {
+      "id": "r6t5GlLZ6RS-OfOpAAAC",
+      "name": "j",
+      "roomCode": "j",
+      "deviceId": ""
+    },
+    {
+      "id": "w-BsuFGGWQ6BZNlVAAAC",
+      "name": "jk",
+      "roomCode": "jk",
+      "deviceId": ""
+    },
+    {
+      "id": "RfjZoXHoM9TqH8TEAAAE",
+      "name": "jkk",
+      "roomCode": "jkk",
+      "deviceId": ""
+    }
+  ]
+}

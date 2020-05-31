@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isTeacher: false,
+    userName: '',
     roomCode: '',
     students: [],
     // teachers only
@@ -32,6 +33,9 @@ export default new Vuex.Store({
       if (!student) return;
       student.lines = student.lines.concat(lines);
     },
+    SET_USER_NAME(state, name) {
+      state.userName = name;
+    }
   },
   actions: {
     setIsTeacher({ commit }, isTeacher) {
@@ -51,11 +55,16 @@ export default new Vuex.Store({
     },
     addStudentLines({ commit }, { studentId, lines }) {
       commit('ADD_STUDENT_LINES', { studentId, lines });
+    },
+    setUserName({ commit }, name) {
+      commit('SET_USER_NAME', name);
     }
   },
   getters: {
     getLinesByStudentId: (state) => (studentId) => {
-      return state.students.find(id => studentId === id).lines;
+      const student = state.students.find(({ id }) => studentId === id);
+      if (!student) console.error(`Student ${studentId} not found.`);
+      return student.lines;
     }
   }
 })

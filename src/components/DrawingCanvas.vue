@@ -29,10 +29,18 @@ export default {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    this.$socket.on('addLines', (lines) => {
+    this.$socket.on('addTeacherLines', (lines) => {
       lines.forEach((line) => {
         this.paint(line.start, line.end);
       });
+    });
+
+    this.$socket.on('addStudentLines', (studentId, lines) => {
+      if (this.currentStudentId === studentId) {
+        lines.forEach((line) => {
+          this.paint(line.start, line.end);
+        })
+      }
     });
   },
   methods: {
