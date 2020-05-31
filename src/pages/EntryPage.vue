@@ -25,7 +25,7 @@
           <v-card-actions>
             <v-btn color="success" @click="createRoom()">Create</v-btn>
             <v-spacer></v-spacer>
-            <v-text id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</v-text>
+            <p id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</p>
             <v-spacer></v-spacer>
             <v-btn color="info" @click="joinRoom()">Join</v-btn>
           </v-card-actions>
@@ -39,7 +39,7 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="info">Connect</v-btn>
+            <v-btn color="info" @click="connectMobile()">Connect</v-btn>
           </v-card-actions>
             </v-tab-item>
             </v-tabs>
@@ -82,8 +82,11 @@ export default {
         this.$router.push({ path: '/room'});
       })
     },
+    connectMobile() {
+      this.$router.push({path: '/mobile'});
+    },
     ...mapActions(['setRoomCode', 'setIsTeacher'])
-  }
+  },
 }
 </script>
 

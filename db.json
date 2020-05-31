@@ -1,0 +1,35 @@
+{
+  "rooms": [
+    {
+      "code": "",
+      "students": [
+        {
+          "id": "jK8JMR6hFU-PipwfAAAd",
+          "roomCode": ""
+        },
+        {
+          "id": "WITKX0Z52GF-Q0P5AAAh",
+          "roomCode": ""
+        }
+      ],
+      "teacherId": "jK8JMR6hFU-PipwfAAAd"
+    },
+    {
+      "code": {
+        "roomCode": "",
+        "userName": ""
+      },
+      "students": [
+        {
+          "id": "N8mljMlYdY-ICYc-AAAk",
+          "roomCode": {
+            "roomCode": "",
+            "userName": ""
+          }
+        }
+      ],
+      "teacherId": "N8mljMlYdY-ICYc-AAAk"
+    }
+  ],
+  "users": []
+}

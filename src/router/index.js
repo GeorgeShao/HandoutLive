@@ -2,10 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import RoomPage from '../pages/RoomPage.vue'
 import EntryPage from '../pages/EntryPage.vue'
+import MobilePage from '../pages/MobilePage'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'EntryPage',
@@ -15,6 +16,11 @@ Vue.use(VueRouter)
     path: '/room',
     name: 'RoomPage',
     component: RoomPage
+  },
+  {
+    path: '/mobile',
+    name: 'MobilePage',
+    component: MobilePage,
   }
 ]
 
