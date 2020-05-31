@@ -52,13 +52,6 @@ export default {
         this.paintLines(lines);
       }
     });
-
-    this.$socket.on('changedCanvas', (lines) => {
-      if (this.isTeacher) {
-        this.clearCanvas();
-        this.paintLines(lines);
-      }
-    });
   },
   methods: {
     paint(prevPos, curPos) {

@@ -22,7 +22,7 @@
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title>Connect Code: {{ connectCode }}</v-list-item-title>
-              <v-list-item-subtitle>Use this code to connect to a device. Do not share this code.</v-list-item-subtitle>
+              <v-list-item-subtitle>Use this to connect to a device.</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-subheader>
@@ -103,12 +103,13 @@
         fab
         bottom
         left
+        style="margin-bottom: 40px"
         color="blue"
         @click="openUploadFileDialog()"
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
-      
+
     </v-content>
   </v-app>
 </template>
@@ -137,7 +138,7 @@ export default {
   },
   created() {
     if (this.students.length === 0) {
-      // this.$router.push({ path: '/' });
+      this.$router.push({ path: '/' });
     }
   },
   mounted() {
@@ -155,14 +156,8 @@ export default {
       })
       .on('sendMessage', (message) => {
         this.messages.push(message);
-      })
-      .on('changedCanvas', ({studentPos}) => {
-        if (!this.isTeacher) {
-          this.isTeacherCanvas = studentPos === 0;
-        }
-
-        this.currentStudentPos = studentPos;
       });
+
   },
   computed: {
     ...mapState(['students', 'isTeacher', 'roomCode', 'userName', 'connectCode']),
@@ -200,6 +195,7 @@ export default {
   },
   watch: {
     currentStudentPos(studentPos) {
+      console.log(studentPos);
       const ctx = this.$refs.drawingCanvas.$refs.canvas.getContext('2d');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       const drawingCanvas = this.$refs.drawingCanvas;

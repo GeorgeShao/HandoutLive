@@ -110,6 +110,13 @@ export default {
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(result.isTeacher);
         this.setUserId(result.userId);
+        result.students.forEach((student) => {
+          console.log(student);
+          this.addStudent({
+            id: student.id,
+            name: student.name
+          });
+        });
         this.setCurrentStudentId(result.userId);
         this.setConnectCode(result.connectCode);
         this.$router.push({ path: '/mobile' });

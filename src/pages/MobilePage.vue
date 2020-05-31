@@ -9,7 +9,7 @@
       @mouseup="onMouseUp"
       style="position: relative"
     >
-      <DrawingCanvas :disabled="!isEditMode" />
+      <DrawingCanvas :disabled="!isEditMode" ref="mobileDrawingCanvas" />
     </div>
   </div>
   <v-btn
@@ -29,6 +29,7 @@
 
 <script>
 import DrawingCanvas from "../components/DrawingCanvas";
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   name: "MobilePage",
@@ -41,7 +42,38 @@ export default {
     left: 0,
     top: 0
   }),
+
+  mounted() {
+    console.log('hi');
+    this.$socket.on('changedCanvas', ({studentPos, lines}) => {
+      if (this.isTeacher) {
+        const drawingCanvas = this.$refs.mobileDrawingCanvas;
+        console.log(drawingCanvas);
+        drawingCanvas.clearCanvas();
+        drawingCanvas.paintLines(lines);
+        this.currentStudentPos = studentPos;
+        const id = this.students[studentPos].id;
+        this.setCurrentStudentId(id);
+      }
+    });
+    this.$socket
+      .on('studentJoined', (student) => {
+        this.addStudent(student);
+      })
+      .on('studentLeft', (studentId) => {
+        this.removeStudent(studentId);
+      })
+      .on('teacherLeft', () => {
+        this.resetState();
+        this.$router.push({ path: '/' });
+      });
+  },
+  computed: {
+    ...mapGetters(['getLinesByStudentId']),
+    ...mapState(['isTeacher', 'students'])
+  },
   methods: {
+    ...mapActions(['setCurrentStudentId', 'addStudent', 'removeStudent', 'resetState']),
     toggleEditMode() {
       this.isEditMode = !this.isEditMode;
     },
