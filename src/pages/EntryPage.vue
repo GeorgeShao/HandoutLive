@@ -63,7 +63,7 @@ export default {
         this.setIsTeacher(false);
         this.$router.push({ path: '/user' });
         var invalid_room_code_msg_box = document.getElementById("invalid_room_code_msg");
-        invalid_room_code_msg_box.style.display = "none";
+        invalid_room_code_msg_box.style.display = "block";
       });
     },
     createRoom() {
