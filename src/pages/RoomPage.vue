@@ -112,6 +112,7 @@ export default {
         this.removeStudent(studentId);
       })
       .on('teacherLeft', () => {
+        this.resetState();
         this.$router.push({ path: '/' });
       });
   },
@@ -120,7 +121,7 @@ export default {
     ...mapGetters(['getLinesByStudentId'])
   },
   methods: {
-    ...mapActions(['addStudent', 'removeStudent', 'setCurrentStudentId']),
+    ...mapActions(['addStudent', 'removeStudent', 'setCurrentStudentId', 'resetState']),
     openUploadFileDialog() {
       var fileSelector = document.createElement('input');
       fileSelector.setAttribute('type', 'file');

@@ -1,17 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
+
+const getDefaultState = () => ({
+  isTeacher: false,
+  userName: '',
+  roomCode: '',
+  students: [],
+  // teachers only
+  currentStudentId: '',
+});
 
 export default new Vuex.Store({
-  state: {
-    isTeacher: false,
-    userName: '',
-    roomCode: '',
-    students: [],
-    // teachers only
-    currentStudentId: '',
-  },
+  state: getDefaultState(),
   mutations: {
     SET_IS_TEACHER(state, isTeacher) {
       state.isTeacher = isTeacher;
@@ -35,6 +37,9 @@ export default new Vuex.Store({
     },
     SET_USER_NAME(state, name) {
       state.userName = name;
+    },
+    RESET_STATE(state) {
+      Object.assign(state, getDefaultState());
     }
   },
   actions: {
@@ -58,6 +63,9 @@ export default new Vuex.Store({
     },
     setUserName({ commit }, name) {
       commit('SET_USER_NAME', name);
+    },
+    resetState({ commit }) {
+      commit('RESET_STATE');
     }
   },
   getters: {

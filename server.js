@@ -19,7 +19,12 @@ io.on('connection', (socket) => {
     const roomCode = db.get('users').find({ id: socket.id }).get('roomCode').value();
     const room = db.get('rooms').find({ code: roomCode });
     const teacherId = room.get('teacherId').value();
+    db.get('users').remove({ id: socket.id });
     if (teacherId === socket.id) {
+      console.log(`Removing room ${roomCode}`);
+      room.get('studentIds').each(studentId => {
+        db.get('users').find({ id: studentId }).set('roomCode', '').write();
+      });
       db.get('rooms').remove({ code: roomCode }).write();
       socket.to(roomCode).emit('teacherLeft');
     } else {
