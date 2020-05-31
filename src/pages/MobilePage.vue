@@ -29,7 +29,6 @@
 
 <script>
 import DrawingCanvas from "../components/DrawingCanvas";
-import {mapActions} from "vuex";
 
 export default {
   name: "MobilePage",
@@ -37,6 +36,8 @@ export default {
   data: () => ({
     isEditMode: false,
     isPressing: false,
+    curPos: {x: 0, y: 0},
+    prevPos: {x: 0, y: 0},
     left: 0,
     top: 0
   }),
@@ -53,43 +54,21 @@ export default {
     onMouseDown(event) {
       if (this.isEditMode) return;
       this.isPressing = true;
-      const { offsetX, offsetY } = event;
-      this.prevPos = { x: offsetX, y: offsetY };
+      const { pageX, pageY } = event;
+      this.prevPos = { x: pageX, y: pageY };
     },
     onMouseMove(event) {
       if (!this.isPressing || this.isEditMode) return;
-      const { offsetX: x, offsetY: y } = event;
-      const offsetData = { x, y };
+      const {pageX: x, pageY: y} = event;
+      const offsetData = {x, y};
       this.move(this.prevPos, offsetData);
-      this.prevPos = { x, y };
+      this.prevPos = {x, y};
     },
     onMouseUp() {
       if (this.isPressing) {
         this.isPressing = false;
       }
-    },
-    async addLines() {
-      if (this.isTeacher) {
-        this.$socket.emit('addTeacherLines', this.currentStudentId, this.linesBuffer);
-      } else {
-        this.$socket.emit('addStudentLines', this.$socket.id, this.linesBuffer);
-      }
-      this.linesBuffer = [];
-    },
-    uploadImage(url) {
-      const ctx = this.setCanvasContext();
-      const img = new Image();
-      img.src = url;
-      img.onload = function() {
-        ctx.drawImage(img, 0, 0);
-      }
-    },
-    clearCanvas() {
-      const canvas = this.$refs.canvas;
-      const ctx = this.setCanvasContext();
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    },
-    ...mapActions(['addStudentLines'])
+    }
   }
 }
 </script>
