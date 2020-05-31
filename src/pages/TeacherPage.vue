@@ -95,6 +95,7 @@
         style="margin-bottom: 40px"
         color="blue"
         @click="openUploadFileDialog()"
+        v-show="currentStudentId"
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
@@ -129,29 +130,13 @@ export default {
       fileSelector.setAttribute('type', 'file');
       fileSelector.click();
       fileSelector.addEventListener("change", handleFiles, false);
+      const canvas = this.$refs.drawingCanvas;
       function handleFiles() {
         var fileData = this.files[0];
-        console.log("fileData:", fileData)
+        canvas.uploadImage(URL.createObjectURL(fileData));
+        console.log("fileData:", fileData);
       }
     },
-
-      uploadImage() {
-        const file = this.$refs.fileInput;
-
-        const reader = new FileReader();
-        reader.addEventListener(
-          "load",
-          () => {
-            this.$refs.drawingCanvas.uploadImage(reader.result);
-          },
-          false
-        );
-        if (file.files[0]) {
-          reader.readAsDataURL(file.files[0]);
-        }
-
-        file.click();
-      }
   }
 }
 </script>
