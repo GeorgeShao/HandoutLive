@@ -85,7 +85,6 @@
           </v-card>
         </v-sheet>
       </div>
-      <input ref="fileInput" type="file" :onchange="uploadImage" style="display:none"/>
       <v-btn
         absolute
         dark
