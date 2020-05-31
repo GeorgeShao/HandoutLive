@@ -103,6 +103,11 @@ export default {
       currentStudentId: this.$store.state.currentStudentId
     };
   },
+  created() {
+    if (this.students.length === 0) {
+      this.$router.push({ path: '/' });
+    }
+  },
   mounted() {
     this.$socket
       .on('studentJoined', (student) => {

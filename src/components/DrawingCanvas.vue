@@ -1,5 +1,6 @@
 <template>
   <canvas
+    class="canvas"
     ref="canvas"
     @mousedown="onMouseDown"
     @mousemove="onMouseMove"
@@ -13,6 +14,12 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'DrawingCanvas',
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: () => ({
     prevPos: { x: 0, y: 0 },
     curPos: { x: 0, y: 0 },
@@ -57,11 +64,13 @@ export default {
       ctx.stroke();
     },
     onMouseDown(event) {
+      if (this.disabled) return;
       const { offsetX, offsetY } = event;
       this.isPainting = true;
       this.prevPos = { x: offsetX, y: offsetY };
     },
     onMouseMove(event) {
+      if (this.disabled) return;
       if (!this.isPainting) return;
       const { offsetX: x, offsetY: y } = event;
       const offsetData = { x, y };
@@ -74,6 +83,7 @@ export default {
       this.prevPos = { x, y };
     },
     endPaintEvent() {
+      if (this.disabled) return;
       if (this.isPainting) {
         this.isPainting = false;
         this.addLines();
@@ -113,3 +123,9 @@ export default {
   computed: mapState(['isTeacher', 'currentStudentId'])
 }
 </script>
+
+<style scoped>
+  .canvas {
+    border: 1px solid black;
+  }
+</style>
