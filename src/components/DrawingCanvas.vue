@@ -2,10 +2,10 @@
   <canvas
     class="canvas"
     ref="canvas"
-    @mousedown="onMouseDown"
-    @mousemove="onMouseMove"
-    @mouseleave="endPaintEvent"
-    @mouseup="endPaintEvent"
+    @pointermove="onMouseMove"
+    @pointerdown="onMouseDown"
+    @pointerup="endPaintEvent"
+    @pointerleave="endPaintEvent"
   />
 </template>
 
