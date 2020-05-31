@@ -40,6 +40,10 @@ io.on('connection', (socket) => {
     socket.to(userId).emit('addTeacherLines', lines);
   });
 
+  socket.on('addTeacherImage', (userId, image) => {
+    socket.to(userId).emit('addTeacherImage', image);
+  });
+
   socket.on('createRoom', ({userName, roomCode}, ack) => {
     if (db.get('rooms').find({ code: roomCode }).value() !== undefined) {
       return ack({success: false, message: "Room already exists."});

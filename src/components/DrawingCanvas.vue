@@ -42,6 +42,10 @@ export default {
       });
     });
 
+    this.$socket.on('addTeacherImage', (image) => {
+      this.uploadImage(image);
+    });
+
     this.$socket.on('addStudentLines', (studentId, lines) => {
       this.addStudentLines({
         studentId,

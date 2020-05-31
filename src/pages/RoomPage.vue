@@ -133,9 +133,13 @@ export default {
       fileSelector.click();
       fileSelector.addEventListener("change", handleFiles, false);
       const canvas = this.$refs.drawingCanvas;
+      const studentId = this.$store.state.currentStudentId;
+      const socket = this.$socket;
       function handleFiles() {
-        var fileData = this.files[0];
-        canvas.uploadImage(URL.createObjectURL(fileData));
+        const fileData = this.files[0];
+        const fileUrl = URL.createObjectURL(fileData);
+        canvas.uploadImage(fileUrl);
+        socket.emit('addTeacherImage', studentId, fileUrl);
       }
     },
   },
