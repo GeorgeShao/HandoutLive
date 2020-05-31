@@ -1,4 +1,4 @@
-# teachertrainer
+# HandoutLive
 
 ## Project setup
 ```
