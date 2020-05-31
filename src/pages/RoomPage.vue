@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar"/>
+      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar" v-if="isTeacher" />
       <v-toolbar-title>TeacherTrainer</v-toolbar-title>
-      <v-spacer/>
+      <v-spacer />
       <v-icon>mdi-account</v-icon>
     </v-app-bar>
 
-    <v-navigation-drawer app v-model="studentSidebar">
+    <v-navigation-drawer app v-model="studentSidebar" v-if="isTeacher">
       <v-list>
         <v-subheader>
           <v-list-item two-line>
@@ -44,10 +44,7 @@
     <v-content style="overflow: hidden">
       <div class="wrapper">
 
-        <DrawingCanvas ref="drawingCanvas" v-if="currentStudentId" />
-        <v-card v-else class="ma-auto pa-5">
-          Select a student to get started!
-        </v-card>
+        <DrawingCanvas />
 
         <v-sheet>
           <v-card
@@ -85,8 +82,8 @@
           </v-card>
         </v-sheet>
       </div>
-      <input ref="fileInput" type="file" :onchange="uploadImage" style="display:none"/>
       <v-btn
+        v-if="isTeacher"
         absolute
         dark
         fab
@@ -95,16 +92,17 @@
         style="margin-bottom: 40px"
         color="blue"
         @click="openUploadFileDialog()"
+        v-show="currentStudentId"
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
-      
+
     </v-content>
   </v-app>
 </template>
 <script>
 import DrawingCanvas from '../components/DrawingCanvas';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'TeacherPage',
@@ -114,13 +112,23 @@ export default {
     messageSidebar: false,
   }),
   mounted() {
-    this.$socket.on('studentJoined', (studentId) => {
-      this.addStudent(studentId);
-    });
+    this.$socket
+      .on('studentJoined', (student) => {
+        this.addStudent(student);
+      })
+      .on('studentLeft', (studentId) => {
+        this.removeStudent(studentId);
+      })
+      .on('teacherLeft', () => {
+        this.$router.push({ path: '/' });
+      });
   },
-  computed: mapState(['currentStudentId', 'students']),
+  computed: {
+    ...mapState(['currentStudentId', 'students', 'isTeacher']),
+    ...mapGetters(['getLinesByStudentId'])
+  },
   methods: {
-    ...mapActions(['addStudent']),
+    ...mapActions(['addStudent', 'removeStudent']),
     setCurrentStudent(student) {
       console.log(student);
     },
@@ -129,29 +137,21 @@ export default {
       fileSelector.setAttribute('type', 'file');
       fileSelector.click();
       fileSelector.addEventListener("change", handleFiles, false);
+      const canvas = this.$refs.drawingCanvas;
       function handleFiles() {
         var fileData = this.files[0];
-        console.log("fileData:", fileData)
+        canvas.uploadImage(URL.createObjectURL(fileData));
+        console.log("fileData:", fileData);
       }
     },
-
-      uploadImage() {
-        const file = this.$refs.fileInput;
-
-        const reader = new FileReader();
-        reader.addEventListener(
-          "load",
-          () => {
-            this.$refs.drawingCanvas.uploadImage(reader.result);
-          },
-          false
-        );
-        if (file.files[0]) {
-          reader.readAsDataURL(file.files[0]);
-        }
-
-        file.click();
-      }
+  },
+  watch: {
+    currentStudentId(studentId) {
+      const ctx = this.$refs.canvas.getContext('2d');
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      const lines = this.getLinesByStudentId(studentId);
+      lines.forEach(line => this.paint(line.start, line.stop));
+    }
   }
 }
 </script>

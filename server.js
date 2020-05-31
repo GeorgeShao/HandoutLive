@@ -13,36 +13,56 @@ server.listen(port, () => console.log(`App listening at port ${port}`));
 
 io.on('connection', (socket) => {
   console.log(`User ${socket.id} connected!`);
-  socket.on('addLines', (lines, userId) => {
-    // Student is drawing lines
-    if (!userId) {
-      const roomCode = db.get('users').find({ id: socket.id }).get('roomCode').value();
-      const teacherId = db.get('rooms').find({ code: roomCode }).get('teacherId').value();
-      socket.to(teacherId).emit('addStudentLines', socket.id, lines);
-    }
-    // Teacher is drawing lines for student
-    else {
-      socket.to(userId).emit('addTeacherLines', lines);
+
+  socket.on('disconnect', () => {
+    console.log(`User ${socket.id} disconnected!`);
+    const roomCode = db.get('users').find({ id: socket.id }).get('roomCode').value();
+    const room = db.get('rooms').find({ code: roomCode });
+    const teacherId = room.get('teacherId').value();
+    if (teacherId === socket.id) {
+      db.get('rooms').remove({ code: roomCode }).write();
+      socket.to(roomCode).emit('teacherLeft');
+    } else {
+      room.get('studentIds').remove(socket.id).write();
+      socket.to(teacherId).emit('studentLeft', socket.id);
     }
   });
 
-  socket.on('createRoom', (roomCode, ack) => {
+  socket.on('addStudentLines', (userId, lines) => {
+    console.log(`User ${userId} drew lines!`);
+    const roomCode = db.get('users').find({id: userId}).get('roomCode').value();
+    const teacherId = db.get('rooms').find({code: roomCode}).get('teacherId').value();
+    socket.to(teacherId).emit('addStudentLines', userId, lines);
+  });
+
+  socket.on('addTeacherLines', (userId, lines) => {
+    console.log(`Teacher drew lines to ${userId}!`);
+    socket.to(userId).emit('addTeacherLines', lines);
+  });
+
+  socket.on('createRoom', ({userName, roomCode}, ack) => {
+    console.log(`Attempting to create room with code ${roomCode}...`);
     if (db.get('rooms').find({ code: roomCode }).value() !== undefined) {
       return ack({success: false, message: "Room already exists."});
     }
     socket.join(roomCode);
     db.get('rooms').push({
       code: roomCode,
-      students: [],
-      teacher: {
-        id: socket.id,
-        deviceId: ''
-      }
+      studentIds: [],
+      teacherId: socket.id
     }).write();
+
+    db.get('users').push({
+      id: socket.id,
+      name: userName,
+      roomCode,
+      deviceId: '',
+    }).write();
+
     return ack({ success: true });
   });
 
-  socket.on('joinRoom', (roomCode, ack) => {
+  socket.on('joinRoom', ({userName, roomCode}, ack) => {
     console.log(`User ${socket.id} joining room ${roomCode}...`);
     const room = db.get('rooms').find({ code: roomCode });
     if (room.value() === undefined) {
@@ -53,12 +73,20 @@ io.on('connection', (socket) => {
     }
     const teacherId = room.get('teacherId').value();
     socket.join(roomCode);
-    socket.to(teacherId).emit('studentJoined', socket.id);
-    room.get('students').push({
+    socket.to(teacherId).emit('studentJoined', {
       id: socket.id,
+      name: userName
+    });
+
+    room.get('users').push({
+      id: socket.id,
+      name: userName,
       deviceId: '',
       roomCode
     }).write();
+
+    room.get('studentIds').push(socket.id).write();
+
     return ack({ success: true });
   });
 });

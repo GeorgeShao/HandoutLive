@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'DrawingCanvas',
   data: () => ({
@@ -77,7 +79,12 @@ export default {
       return ctx;
     },
     async addLines() {
-      this.$socket.emit('addLines', this.linesBuffer);
+      if (this.isTeacher) {
+        this.$socket.emit('addTeacherLines', this.currentStudentId, this.linesBuffer);
+      } else {
+        this.$socket.emit('addStudentLines', this.$socket.id, this.linesBuffer);
+      }
+      this.linesBuffer = [];
     },
     uploadImage(url) {
       const ctx = this.setCanvasContext();
@@ -92,6 +99,7 @@ export default {
       const ctx = this.setCanvasContext();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
-  }
+  },
+  computed: mapState(['isTeacher', 'currentStudentId'])
 }
 </script>
