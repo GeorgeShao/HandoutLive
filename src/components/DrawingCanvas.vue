@@ -39,10 +39,7 @@ export default {
     this.$socket.on('addTeacherLines', (lines) => {
       console.log(lines);
       this.addLines({ id: this.getTeacherId(), lines });
-
-      lines.forEach((line) => {
-        this.paint(line.start, line.stop);
-      });
+      this.paintLines(lines);
     });
 
     this.$socket.on('addTeacherImage', (image) => {
@@ -50,16 +47,15 @@ export default {
     });
 
     this.$socket.on('addStudentLines', (studentId, lines) => {
-      this.addLines({
-        id: studentId,
-        lines
-      });
-
+      this.addLines({ id: studentId, lines });
       if (this.currentStudentId === studentId) {
-        lines.forEach((line) => {
-          this.paint(line.start, line.stop);
-        })
+        this.paintLines(lines);
       }
+    });
+
+    this.$socket.on('repaintCanvas', (lines) => {
+      this.clearCanvas();
+      this.paintLines(lines);
     });
   },
   methods: {
@@ -69,6 +65,11 @@ export default {
       ctx.moveTo(prevPos.x, prevPos.y);
       ctx.lineTo(curPos.x, curPos.y);
       ctx.stroke();
+    },
+    paintLines(lines) {
+      lines.forEach((line) => {
+        this.paint(line.start, line.stop);
+      })
     },
     onMouseDown(event) {
       if (this.disabled) return;

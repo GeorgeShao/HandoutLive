@@ -63,6 +63,11 @@ io.on('connection', (socket) => {
     socket.to(roomCode).emit('sendMessage', message);
   });
 
+  socket.on('changedCanvas', (lines) => {
+    const deviceId = db.get('users').find({ id: socket.id }).get('deviceId').value();
+    socket.to(deviceId).emit('repaintCanvas', lines);
+  });
+
   socket.on('createRoom', ({userName, roomCode}, ack) => {
     if (db.get('rooms').find({ code: roomCode }).value() !== undefined) {
       return ack({success: false, message: "Room already exists."});

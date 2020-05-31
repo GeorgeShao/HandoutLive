@@ -194,29 +194,11 @@ export default {
       const ctx = this.$refs.drawingCanvas.$refs.canvas.getContext('2d');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       const drawingCanvas = this.$refs.drawingCanvas;
-
-      if (this.isTeacher) {
-        const studentId = this.students[studentPos].id;
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const lines = this.getLinesByStudentId(studentId);
-        lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
-        this.setCurrentStudentId(studentId);
-      } else {
-        // Teacher's canvas
-        if (studentPos === 0) {
-          const teacherId = this.getTeacherId();
-          const lines = this.getLinesByStudentId(teacherId);
-          lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
-          this.setCurrentStudentId(teacherId);
-        }
-        // Student's canvas
-        else {
-          const studentId = this.$socket.id;
-          const lines = this.getLinesByStudentId(studentId);
-          lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
-          this.setCurrentStudentId(studentId);
-        }
-      }
+      const id = this.students[studentPos].id;
+      const lines = this.getLinesByStudentId(id);
+      this.$socket.emit('changedCanvas', lines);
+      lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
+      this.setCurrentStudentId(id);
     }
   }
 }
