@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar" />
+      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar"/>
       <v-toolbar-title>TeacherTrainer</v-toolbar-title>
       <v-spacer/>
       <v-icon>mdi-account</v-icon>
@@ -44,7 +44,7 @@
     <v-content style="overflow: hidden">
       <div class="wrapper">
 
-        <DrawingCanvas v-if="currentStudentId" />
+        <DrawingCanvas ref="drawingCanvas" v-if="currentStudentId" />
         <v-card v-else class="ma-auto pa-5">
           Select a student to get started!
         </v-card>
@@ -85,7 +85,7 @@
           </v-card>
         </v-sheet>
       </div>
-
+      <input ref="fileInput" type="file" :onchange="uploadImage" style="display:none"/>
       <v-btn
         absolute
         dark
@@ -133,7 +133,25 @@ export default {
         var fileData = this.files[0];
         console.log("fileData:", fileData)
       }
-    }
+    },
+
+      uploadImage() {
+        const file = this.$refs.fileInput;
+
+        const reader = new FileReader();
+        reader.addEventListener(
+          "load",
+          () => {
+            this.$refs.drawingCanvas.uploadImage(reader.result);
+          },
+          false
+        );
+        if (file.files[0]) {
+          reader.readAsDataURL(file.files[0]);
+        }
+
+        file.click();
+      }
   }
 }
 </script>

@@ -78,6 +78,19 @@ export default {
     },
     async addLines() {
       this.$socket.emit('addLines', this.linesBuffer);
+    },
+    uploadImage(url) {
+      const ctx = this.setCanvasContext();
+      const img = new Image();
+      img.src = url;
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+      }
+    },
+    clearCanvas() {
+      const canvas = this.$refs.canvas;
+      const ctx = this.setCanvasContext();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
   }
 }
