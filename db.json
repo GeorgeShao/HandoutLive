@@ -13,7 +13,49 @@
         "id": "kEOklJgyFb0LXYZtAAAB",
         "deviceId": ""
       }
+    },
+    {
+      "code": "aoeu",
+      "studentIds": [],
+      "teacherId": "Otin-wVpdo0PmHt-AAAD"
+    },
+    {
+      "code": "a",
+      "studentIds": [
+        "k4VArnLVYFPvZYW6AAAA"
+      ],
+      "teacherId": "Otin-wVpdo0PmHt-AAAD"
+    },
+    {
+      "code": "k",
+      "studentIds": [
+        "zp9GHINBz_Ug70GQAAAI"
+      ],
+      "teacherId": "Otu4AxCucm_yG1Y7AAAG"
     }
   ],
-  "users": []
+  "users": [
+    {
+      "id": "Otin-wVpdo0PmHt-AAAD",
+      "deviceId": "",
+      "roomCode": ""
+    },
+    {
+      "id": "Otin-wVpdo0PmHt-AAAD",
+      "deviceId": "",
+      "roomCode": ""
+    },
+    {
+      "id": "Otu4AxCucm_yG1Y7AAAG",
+      "name": "k",
+      "roomCode": "k",
+      "deviceId": ""
+    },
+    {
+      "id": "WNdAHU8qeidjXfNiAAAE",
+      "name": "aoeu",
+      "roomCode": "aoeua",
+      "deviceId": ""
+    }
+  ]
 }

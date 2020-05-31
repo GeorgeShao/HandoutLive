@@ -44,10 +44,7 @@
     <v-content style="overflow: hidden">
       <div class="wrapper">
 
-        <DrawingCanvas v-if="!isTeacher || currentStudentId" />
-        <v-card v-else class="ma-auto pa-5">
-          Select a student to get started!
-        </v-card>
+        <DrawingCanvas />
 
         <v-sheet>
           <v-card
@@ -99,13 +96,13 @@
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
-      
+
     </v-content>
   </v-app>
 </template>
 <script>
 import DrawingCanvas from '../components/DrawingCanvas';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'TeacherPage',
@@ -116,8 +113,8 @@ export default {
   }),
   mounted() {
     this.$socket
-      .on('studentJoined', (studentId) => {
-        this.addStudent(studentId);
+      .on('studentJoined', (student) => {
+        this.addStudent(student);
       })
       .on('studentLeft', (studentId) => {
         this.removeStudent(studentId);
@@ -126,7 +123,10 @@ export default {
         this.$router.push({ path: '/' });
       });
   },
-  computed: mapState(['currentStudentId', 'students', 'isTeacher']),
+  computed: {
+    ...mapState(['currentStudentId', 'students', 'isTeacher']),
+    ...mapGetters(['getLinesByStudentId'])
+  },
   methods: {
     ...mapActions(['addStudent', 'removeStudent']),
     setCurrentStudent(student) {
@@ -141,6 +141,14 @@ export default {
         var fileData = this.files[0];
         console.log("fileData:", fileData)
       }
+    },
+  },
+  watch: {
+    currentStudentId(studentId) {
+      const ctx = this.$refs.canvas.getContext('2d');
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      const lines = this.getLinesByStudentId(studentId);
+      lines.forEach(line => this.paint(line.start, line.stop));
     }
   }
 }

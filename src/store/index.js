@@ -7,8 +7,9 @@ export default new Vuex.Store({
   state: {
     isTeacher: false,
     roomCode: '',
-    currentStudentId: '',
     students: [],
+    // teachers only
+    currentStudentId: '',
   },
   mutations: {
     SET_IS_TEACHER(state, isTeacher) {
@@ -42,14 +43,19 @@ export default new Vuex.Store({
     setCurrentStudentId({ commit }, currentStudentId) {
       commit('SET_CURRENT_STUDENT_ID', currentStudentId);
     },
-    addStudent({ commit }, studentId) {
-      commit('ADD_STUDENT', { id: studentId, lines: [] });
+    addStudent({ commit }, student) {
+      commit('ADD_STUDENT', { ...student, lines: [] });
     },
     removeStudent({ commit }, studentId) {
       commit('REMOVE_STUDENT', studentId);
     },
     addStudentLines({ commit }, { studentId, lines }) {
       commit('ADD_STUDENT_LINES', { studentId, lines });
+    }
+  },
+  getters: {
+    getLinesByStudentId: (state) => (studentId) => {
+      return state.students.find(id => studentId === id).lines;
     }
   }
 })
