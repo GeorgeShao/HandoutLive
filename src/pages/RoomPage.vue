@@ -77,7 +77,7 @@
             height="100%"
             tile
           >
-            <v-list-item v-for="message in messages" :key="message.id + message.contents + message.sender" two-line>
+            <v-list-item v-for="(message, index) in messages" :key="index" two-line>
               <v-list-item-content>
                 <v-list-item-title>{{message.sender}}</v-list-item-title>
                 <v-list-item-subtitle>{{message.contents}}</v-list-item-subtitle>
@@ -108,6 +108,64 @@
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
+
+      <v-speed-dial
+        v-model="fab"
+      >
+        <template v-slot:activator>
+          <v-btn
+            fab
+            v-if="isTeacher"
+            absolute
+            dark
+            style="margin-bottom: 110px"
+            color="blue"
+            bottom
+            left
+            :direction="direction"
+            :open-on-hover="hover"
+            :transition="transition"
+          >
+            <v-icon v-if="fab">mdi-close</v-icon>
+            <v-icon v-else>mdi-pencil</v-icon>
+          </v-btn>
+        </template>
+        <v-btn
+          fab
+          dark
+          small
+          color="black"
+        >
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="white"
+        >
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="red"
+        >
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="green"
+        >
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="blue"
+        >
+        </v-btn>
+      </v-speed-dial>
 
     </v-content>
   </v-app>
