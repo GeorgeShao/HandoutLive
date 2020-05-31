@@ -5,12 +5,13 @@ Vue.use(Vuex);
 
 const getDefaultState = () => ({
   isTeacher: false,
+  userId: '',
   userName: '',
   roomCode: '',
   students: [],
+  connectCode: '',
   // teachers only
-  currentStudentId: '',
-  connectCode: ''
+  currentStudentId: ''
 });
 
 export default new Vuex.Store({
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     SET_USER_NAME(state, name) {
       state.userName = name;
     },
+    SET_USER_ID(state, userId) {
+      state.userId = userId;
+    },
     RESET_STATE(state) {
       Object.assign(state, getDefaultState());
     },
@@ -52,6 +56,9 @@ export default new Vuex.Store({
     },
     setRoomCode({ commit }, roomCode) {
       commit('SET_ROOM_CODE', roomCode);
+    },
+    setUserId({ commit }, userId) {
+      commit('SET_USER_ID', userId);
     },
     setCurrentStudentId({ commit }, currentStudentId) {
       commit('SET_CURRENT_STUDENT_ID', currentStudentId);

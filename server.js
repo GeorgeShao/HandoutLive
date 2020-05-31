@@ -8,14 +8,24 @@ const { v4: uuidv4 } = require('uuid');
 
 const adapter = new FileSync('db.json');
 const db = low(adapter);
-db.defaults({ rooms: [], users: [] }).write();
+db.defaults({ rooms: [], users: [], devices: [] }).write();
 
 server.listen(port, () => console.log(`App listening at port ${port}`));
 
 io.on('connection', (socket) => {
+  function getUserId() {
+    const device = db.get('devices').find({ id: socket.id }).value();
+    if (device === undefined) return socket.id;
+    else return db.get('users').find({ id: device.userId }).get('id').value();
+  }
 
   socket.on('disconnect', () => {
-    const roomCode = db.get('users').find({ id: socket.id }).get('roomCode').value();
+    const user = db.get('users').find({ id: socket.id });
+    if (user === undefined) {
+      db.get('devices').remove({ id: socket.id });
+      return;
+    }
+    const roomCode = user.get('roomCode').value();
     const room = db.get('rooms').find({ code: roomCode });
     const teacherId = room.get('teacherId').value();
     db.get('users').remove({ id: socket.id });
@@ -43,7 +53,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('addTeacherLines', (userId, lines) => {
-    if (userId === socket.id) {
+    const socketId = getUserId();
+    if (userId === socketId) {
       const roomCode = db.get('users').find({ id: userId }).get('roomCode').value();
       // only send teacher lines to those focused on the teacher
       return socket.to(roomCode).emit('addStudentLines', userId, lines);
@@ -134,14 +145,26 @@ io.on('connection', (socket) => {
       return ack({ success: false, message: 'Connect code not found.' });
     }
 
-    if (user.get('deviceId').value() !== undefined) {
+    if (user.get('deviceId').value()) {
       return ack({ success: false, message: 'Connect code already used.' });
     }
 
+
+    db.get('devices').push({
+      id: socket.id,
+      userId: user.get('id').value()
+    }).write();
     user.set('deviceId', socket.id).write();
-    const room = db.get('rooms').find({ code: user.get('roomCode').value() });
+
+    const roomCode = user.get('roomCode').value();
+    const userId = user.get('id').value();
+
+    socket.join(roomCode);
+    socket.join(user.get('id').value());
+
+    const room = db.get('rooms').find({ code: roomCode });
     const isTeacher = room.get('teacherId').value() === user.get('id').value();
-    return ack({ success: true, isTeacher });
+    return ack({ success: true, isTeacher, userId });
   });
 });
 

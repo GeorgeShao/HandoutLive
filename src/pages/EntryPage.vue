@@ -39,7 +39,7 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="info">Connect</v-btn>
+            <v-btn color="info" @click="connectDevice()">Connect</v-btn>
           </v-card-actions>
         </v-tab-item>
       </v-tabs>
@@ -71,6 +71,7 @@ export default {
         this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(false);
+        this.setUserId(this.$socket.id);
         this.addStudent({
           id: result.teacherId,
           name: result.teacherName
@@ -92,6 +93,7 @@ export default {
         this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(true);
+        this.setUserId(this.$socket.id);
         this.addStudent({
           id: this.$socket.id,
           name: this.userName
@@ -106,12 +108,21 @@ export default {
         if (!result.success) return console.error(result.message);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(result.isTeacher);
-        this.setCurrentStudentId(this.$socket.id);
+        this.setUserId(result.userId);
+        this.setCurrentStudentId(result.userId);
         this.setConnectCode(result.connectCode);
         this.$router.push({ path: '/mobile' });
       });
     },
-    ...mapActions(['setRoomCode', 'setIsTeacher', 'setUserName', 'addStudent', 'setCurrentStudentId', 'setConnectCode'])
+    ...mapActions([
+      'setRoomCode',
+      'setIsTeacher',
+      'setUserName',
+      'addStudent',
+      'setCurrentStudentId',
+      'setConnectCode',
+      'setUserId'
+    ])
   }
 }
 </script>

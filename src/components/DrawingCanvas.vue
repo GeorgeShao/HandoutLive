@@ -98,7 +98,7 @@ export default {
         if (this.isTeacher) {
           this.$socket.emit('addTeacherLines', this.currentStudentId, this.linesBuffer);
         } else {
-          this.$socket.emit('addStudentLines', this.$socket.id, this.linesBuffer);
+          this.$socket.emit('addStudentLines', this.userId, this.linesBuffer);
         }
         this.linesBuffer = [];
       }
@@ -127,7 +127,7 @@ export default {
     ...mapActions(['addLines']),
   },
   computed: {
-    ...mapState(['isTeacher', 'currentStudentId']),
+    ...mapState(['isTeacher', 'currentStudentId', 'userId']),
     ...mapGetters(['getTeacherId'])
   },
 }
