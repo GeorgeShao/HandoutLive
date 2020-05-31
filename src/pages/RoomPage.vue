@@ -21,7 +21,7 @@
         <v-subheader>
           <v-list-item two-line>
             <v-list-item-content>
-              <v-list-item-title>Connect code: {{ connectCode }}</v-list-item-title>
+              <v-list-item-title>Connect Code: {{ connectCode }}</v-list-item-title>
               <v-list-item-subtitle>Use this code to connect to a device. Do not share this code.</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
