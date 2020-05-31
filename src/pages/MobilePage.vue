@@ -3,10 +3,10 @@
   <div class="wrapper" ref="wrapper" :style="{ left: `${left}px`, top: `${top}px`}">
     <div
       class="canvas-container"
-      @mousedown="onMouseDown"
-      @mousemove="onMouseMove"
-      @mouseout="onMouseUp"
-      @mouseup="onMouseUp"
+      @pointerdown="onMouseDown"
+      @pointermove="onMouseMove"
+      @pointerout="onMouseUp"
+      @pointerup="onMouseUp"
       style="position: relative"
     >
       <DrawingCanvas :disabled="!isEditMode" ref="mobileDrawingCanvas" />
