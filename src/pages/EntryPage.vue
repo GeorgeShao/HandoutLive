@@ -71,7 +71,6 @@ export default {
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(false);
         this.$router.push({ path: '/room' });
-        
       });
     },
     createRoom() {
@@ -83,10 +82,14 @@ export default {
         this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(true);
+        this.addStudent({
+          id: this.$socket.id,
+          name: this.userName
+        })
         this.$router.push({ path: '/room'});
       })
     },
-    ...mapActions(['setRoomCode', 'setIsTeacher', 'setUserName'])
+    ...mapActions(['setRoomCode', 'setIsTeacher', 'setUserName', 'addStudent'])
   }
 }
 </script>

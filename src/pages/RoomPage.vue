@@ -104,10 +104,6 @@ export default {
     };
   },
   mounted() {
-    this.addStudent({
-      id: this.$socket.id,
-      name: this.userName
-    })
     this.$socket
       .on('studentJoined', (student) => {
         this.addStudent(student);
