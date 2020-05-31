@@ -25,6 +25,8 @@
           <v-card-actions>
             <v-btn color="success" @click="createRoom()">Create</v-btn>
             <v-spacer></v-spacer>
+            <v-text id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</v-text>
+            <v-spacer></v-spacer>
             <v-btn color="info" @click="joinRoom()">Join</v-btn>
           </v-card-actions>
         </v-tab-item>
@@ -56,11 +58,12 @@ export default {
   methods: {
     joinRoom() {
       this.$socket.emit('joinRoom', this.roomCode, (result) => {
-        // TODO DISPLAY ERROR MESSAGES IN THE FORM
         if (!result.success) return console.log(result.message);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(false);
         this.$router.push({ path: '/user' });
+        var invalid_room_code_msg_box = document.getElementById("invalid_room_code_msg");
+        invalid_room_code_msg_box.style.display = "none";
       });
     },
     createRoom() {
