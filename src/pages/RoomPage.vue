@@ -84,13 +84,15 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-text-field
-              label="Solo"
-              v-model="messageField"
-              placeholder="Placeholder"
-              solo
-            ></v-text-field>
-            <v-btn @click="sendMessage()">Send</v-btn>
+            <div class="send-message-container">
+              <v-textarea
+                solo
+                label="Send a message..."
+                class="send-message-box"
+                hide-details
+              ></v-textarea>
+              <v-btn @click="sendMessage()" width="100%">Send</v-btn>
+            </div>
           </v-card>
         </v-sheet>
       </div>
@@ -101,7 +103,6 @@
         fab
         bottom
         left
-        style="margin-bottom: 40px"
         color="blue"
         @click="openUploadFileDialog()"
       >
@@ -217,5 +218,13 @@ export default {
     display: flex;
     height: 100%;
     overflow: hidden;
+  }
+
+  .send-message-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
   }
 </style>
