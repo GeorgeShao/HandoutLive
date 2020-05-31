@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar" />
+      <v-app-bar-nav-icon @click="studentSidebar = !studentSidebar" v-if="isTeacher" />
       <v-toolbar-title>TeacherTrainer</v-toolbar-title>
-      <v-spacer/>
+      <v-spacer />
       <v-icon>mdi-account</v-icon>
     </v-app-bar>
 
-    <v-navigation-drawer app v-model="studentSidebar">
+    <v-navigation-drawer app v-model="studentSidebar" v-if="isTeacher">
       <v-list>
         <v-subheader>
           <v-list-item two-line>
@@ -44,7 +44,7 @@
     <v-content style="overflow: hidden">
       <div class="wrapper">
 
-        <DrawingCanvas v-if="currentStudentId" />
+        <DrawingCanvas v-if="!isTeacher || currentStudentId" />
         <v-card v-else class="ma-auto pa-5">
           Select a student to get started!
         </v-card>
@@ -87,6 +87,7 @@
       </div>
 
       <v-btn
+        v-if="isTeacher"
         absolute
         dark
         fab
@@ -112,13 +113,20 @@ export default {
     messageSidebar: false,
   }),
   mounted() {
-    this.$socket.on('studentJoined', (studentId) => {
-      this.addStudent(studentId);
-    });
+    this.$socket
+      .on('studentJoined', (studentId) => {
+        this.addStudent(studentId);
+      })
+      .on('studentLeft', (studentId) => {
+        this.removeStudent(studentId);
+      })
+      .on('teacherLeft', () => {
+        this.$router.push({ path: '/' });
+      });
   },
-  computed: mapState(['currentStudentId', 'students']),
+  computed: mapState(['currentStudentId', 'students', 'isTeacher']),
   methods: {
-    ...mapActions(['addStudent']),
+    ...mapActions(['addStudent', 'removeStudent']),
     setCurrentStudent(student) {
       console.log(student);
     }

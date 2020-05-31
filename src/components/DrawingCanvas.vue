@@ -77,6 +77,7 @@ export default {
       return ctx;
     },
     async addLines() {
+      
       this.$socket.emit('addLines', this.linesBuffer);
     }
   }

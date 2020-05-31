@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import TeacherPage from '../pages/TeacherPage.vue'
+import RoomPage from '../pages/RoomPage.vue'
 import EntryPage from '../pages/EntryPage.vue'
 
 Vue.use(VueRouter)
@@ -12,9 +12,9 @@ Vue.use(VueRouter)
     component: EntryPage
   },
   {
-    path: '/teacher',
-    name: 'TeacherPage',
-    component: TeacherPage
+    path: '/room',
+    name: 'RoomPage',
+    component: RoomPage
   }
 ]
 

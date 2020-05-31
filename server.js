@@ -12,6 +12,19 @@ db.defaults({ rooms: [], users: [] }).write();
 server.listen(port, () => console.log(`App listening at port ${port}`));
 
 io.on('connection', (socket) => {
+  socket.on('disconnect', () => {
+    const roomCode = db.get('users').find({ id: socket.id }).get('roomCode').value();
+    const room = db.get('rooms').find({ code: roomCode });
+    const teacherId = room.get('teacher').get('id').value();
+    if (teacherId === socket.id) {
+      db.get('rooms').remove({ code: roomCode }).write();
+      socket.to(roomCode).broadcast.emit('teacherLeft');
+    } else {
+      room.get('students').remove({ id: socket.id }).write();
+      socket.to(teacherId).broadcast.emit('studentLeft', socket.id);
+    }
+  });
+
   console.log(`User ${socket.id} connected!`);
   socket.on('addLines', (lines, userId) => {
     // Student is drawing lines
