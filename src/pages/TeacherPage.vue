@@ -94,9 +94,11 @@
         left
         style="margin-bottom: 40px"
         color="blue"
+        @click="openUploadFileDialog()"
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
+      
     </v-content>
   </v-app>
 </template>
@@ -121,6 +123,16 @@ export default {
     ...mapActions(['addStudent']),
     setCurrentStudent(student) {
       console.log(student);
+    },
+    openUploadFileDialog() {
+      var fileSelector = document.createElement('input');
+      fileSelector.setAttribute('type', 'file');
+      fileSelector.click();
+      fileSelector.addEventListener("change", handleFiles, false);
+      function handleFiles() {
+        var fileData = this.files[0];
+        console.log("fileData:", fileData)
+      }
     }
   }
 }
