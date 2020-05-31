@@ -3,19 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "start": "node server.js",
-    "dev": "nodemon --ext js server.js"
+    "start": "vue-cli-service serve"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "express": "^4.17.1",
-    "lowdb": "^1.0.0",
-    "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "uuid": "^8.1.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",
@@ -41,18 +33,11 @@
     "env": {
       "node": true
     },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
+    "extends": ["plugin:vue/essential", "eslint:recommended"],
     "parserOptions": {
       "parser": "babel-eslint"
     },
     "rules": {}
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+  "browserslist": ["> 1%", "last 2 versions", "not dead"]
 }
