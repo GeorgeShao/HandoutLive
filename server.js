@@ -29,14 +29,14 @@ io.on('connection', (socket) => {
   });
 
   socket.on('addStudentLines', (userId, lines) => {
-    console.log(`User ${userId} drew lines!`);
-    const roomCode = db.get('users').find({id: userId}).get('roomCode').value();
-    const teacherId = db.get('rooms').find({code: roomCode}).get('teacherId').value();
-    socket.to(teacherId).emit('addStudentLines', userId, lines);
+    console.log(`User ${userId} drew lines: ${lines}`);
+    // const roomCode = db.get('users').find({id: userId}).get('roomCode').value();
+    // const teacherId = db.get('rooms').find({code: roomCode}).get('teacherId').value();
+    socket.broadcast.emit('addStudentLines', userId, lines);
   });
 
   socket.on('addTeacherLines', (userId, lines) => {
-    console.log(`Teacher drew lines to ${userId}!`);
+    console.log(`Teacher drew to ${userId} some lines: ${lines}`);
     socket.to(userId).emit('addTeacherLines', lines);
   });
 

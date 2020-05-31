@@ -118,20 +118,13 @@ export default {
       .on('teacherLeft', () => {
         this.$router.push({ path: '/' });
       });
-
-    this.$socket.on('addStudentLines', (studentId, lines) => {
-      this.addStudentLines({
-        studentId,
-        lines
-      });
-    });
   },
   computed: {
     ...mapState(['students', 'isTeacher']),
     ...mapGetters(['getLinesByStudentId'])
   },
   methods: {
-    ...mapActions(['addStudent', 'removeStudent', 'addStudentLines']),
+    ...mapActions(['addStudent', 'removeStudent', 'setCurrentStudentId']),
     openUploadFileDialog() {
       var fileSelector = document.createElement('input');
       fileSelector.setAttribute('type', 'file');
@@ -148,10 +141,12 @@ export default {
   watch: {
     currentStudentId(studentPos) {
       const studentId = this.students[studentPos].id;
+      const drawingCanvas = this.$refs.drawingCanvas;
       const ctx = this.$refs.drawingCanvas.$refs.canvas.getContext('2d');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       const lines = this.getLinesByStudentId(studentId);
-      lines.forEach(line => this.paint(line.start, line.stop));
+      lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
+      this.setCurrentStudentId(studentId);
     }
   }
 }
