@@ -79,7 +79,7 @@ export default {
 }
 
 .canvas-container {
-  width: 100vw;
-  height: 100vh;
+  width: 1000px;
+  height: 1000px;
 }
 </style>
