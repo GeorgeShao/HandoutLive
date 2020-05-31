@@ -25,7 +25,7 @@
           <v-card-actions>
             <v-btn color="success" @click="createRoom()">Create</v-btn>
             <v-spacer></v-spacer>
-            <george-coded-this-dont-question-it-but-it-works class="mx-auto" id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</george-coded-this-dont-question-it-but-it-works>
+            <span class="mx-auto" id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</span>
             <v-spacer></v-spacer>
             <v-btn color="info" @click="joinRoom()">Join</v-btn>
           </v-card-actions>
