@@ -33,7 +33,7 @@
         <v-tab-item>
           <v-card-text>
             <v-form>
-              <v-text-field label="Secret Key" prepend-icon="mdi-lock"/>
+              <v-text-field label="Connect Code" prepend-icon="mdi-lock" v-model="connectCode" />
             </v-form>
           </v-card-text>
           <v-divider></v-divider>
@@ -54,7 +54,8 @@ export default {
   name: 'EntryPage',
   data: () => ({
     userName: '',
-    roomCode: ''
+    roomCode: '',
+    connectCode: ''
   }),
   methods: {
     joinRoom() {
@@ -70,6 +71,7 @@ export default {
         this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(false);
+        this.setCurrentStudentId(this.$socket.id);
         this.$router.push({ path: '/room' });
       });
     },
@@ -78,18 +80,28 @@ export default {
         roomCode: this.roomCode,
         userName: this.userName
       }, (result) => {
-        if (!result.success) return console.log(result.message);
+        if (!result.success) return console.error(result.message);
         this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(true);
         this.addStudent({
           id: this.$socket.id,
           name: this.userName
-        })
+        });
+        this.setCurrentStudentId(this.$socket.id);
         this.$router.push({ path: '/room'});
       })
     },
-    ...mapActions(['setRoomCode', 'setIsTeacher', 'setUserName', 'addStudent'])
+    connectDevice() {
+      this.$socket.emit('connectDevice', this.connectCode, (result) => {
+        if (!result.success) return console.error(result.message);
+        this.setRoomCode(this.roomCode);
+        this.setIsTeacher(result.isTeacher);
+        this.setCurrentStudentId(this.$socket.id);
+        this.$router.push({ path: '/mobile' });
+      });
+    },
+    ...mapActions(['setRoomCode', 'setIsTeacher', 'setUserName', 'addStudent', 'setCurrentStudentId'])
   }
 }
 </script>
