@@ -10,6 +10,7 @@ const getDefaultState = () => ({
   students: [],
   // teachers only
   currentStudentId: '',
+  connectCode: ''
 });
 
 export default new Vuex.Store({
@@ -30,8 +31,8 @@ export default new Vuex.Store({
     REMOVE_STUDENT(state, studentId) {
       state.students = state.students.filter(id => id !== studentId);
     },
-    ADD_STUDENT_LINES(state, { studentId, lines }) {
-      const student = state.students.find(({ id }) => id === studentId);
+    ADD_LINES(state, { id, lines }) {
+      const student = state.students.find(({ id: sId }) => id === sId);
       if (!student) return;
       student.lines = student.lines.concat(lines);
     },
@@ -40,6 +41,9 @@ export default new Vuex.Store({
     },
     RESET_STATE(state) {
       Object.assign(state, getDefaultState());
+    },
+    SET_CONNECT_CODE(state, connectCode) {
+      state.connectCode = connectCode;
     }
   },
   actions: {
@@ -58,14 +62,17 @@ export default new Vuex.Store({
     removeStudent({ commit }, studentId) {
       commit('REMOVE_STUDENT', studentId);
     },
-    addStudentLines({ commit }, { studentId, lines }) {
-      commit('ADD_STUDENT_LINES', { studentId, lines });
+    addLines({ commit }, { id, lines }) {
+      commit('ADD_LINES', { id, lines });
     },
     setUserName({ commit }, name) {
       commit('SET_USER_NAME', name);
     },
     resetState({ commit }) {
       commit('RESET_STATE');
+    },
+    setConnectCode({ commit }, connectCode) {
+      commit('SET_CONNECT_CODE', connectCode);
     }
   },
   getters: {
@@ -73,6 +80,9 @@ export default new Vuex.Store({
       const student = state.students.find(({ id }) => studentId === id);
       if (!student) console.error(`Student ${studentId} not found.`);
       return student.lines;
+    },
+    getTeacherId: (state) => () => {
+      return state.students[0].id;
     }
   }
 })

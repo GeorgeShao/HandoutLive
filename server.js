@@ -43,9 +43,14 @@ io.on('connection', (socket) => {
   });
 
   socket.on('addTeacherLines', (userId, lines) => {
+    if (userId === socket.id) {
+      const roomCode = db.get('users').find({ id: userId }).get('roomCode').value();
+      // only send teacher lines to those focused on the teacher
+      return socket.to(roomCode).emit('addStudentLines', userId, lines);
+    }
     const deviceId = db.get('users').find({id: userId}).get('deviceId').value();
-    socket.to(userId).emit('addTeacherLines', lines);
-    socket.to(deviceId).emit('addTeacherLines', lines);
+    socket.to(userId).emit('addStudentLines', userId, lines);
+    socket.to(deviceId).emit('addStudentLines', userId, lines);
   });
 
   socket.on('addTeacherImage', (userId, image) => {
@@ -69,16 +74,16 @@ io.on('connection', (socket) => {
       teacherId: socket.id
     }).write();
 
-    const connectPassword = uuidv4().slice(0, 6);
+    const connectCode = uuidv4().slice(0, 6);
     db.get('users').push({
       id: socket.id,
       name: userName,
-      connectPassword,
+      connectCode,
       roomCode,
       deviceId: '',
     }).write();
 
-    return ack({ success: true, connectPassword });
+    return ack({ success: true, connectCode });
   });
 
   socket.on('joinRoom', ({userName, roomCode}, ack) => {
@@ -90,29 +95,36 @@ io.on('connection', (socket) => {
       });
     }
     const teacherId = room.get('teacherId').value();
+    const teacher = db.get('users').find({ id: teacherId });
+
     socket.join(roomCode);
     socket.to(teacherId).emit('studentJoined', {
       id: socket.id,
-      name: userName
+      name: userName,
     });
 
-    const connectPassword = uuidv4().slice(0, 6);
+    const connectCode = uuidv4().slice(0, 6);
 
-    room.get('users').push({
+    db.get('users').push({
       id: socket.id,
       name: userName,
-      connectPassword,
+      connectCode,
       deviceId: '',
       roomCode
     }).write();
 
     room.get('studentIds').push(socket.id).write();
 
-    return ack({ success: true, connectPassword });
+    return ack({
+      success: true,
+      connectCode,
+      teacherId,
+      teacherName: teacher.get('name').value()
+    });
   });
 
-  socket.on('connectDevice', (password, ack) => {
-    const user = db.get('users').find({ connectPassword: password });
+  socket.on('connectDevice', (connectCode, ack) => {
+    const user = db.get('users').find({ connectCode });
     if (user.value() === undefined) {
       return ack({ success: false, message: 'Connect code not found.' });
     }

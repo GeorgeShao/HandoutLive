@@ -66,11 +66,19 @@ export default {
         if (!result.success){
           var invalid_room_code_msg_box = document.getElementById("invalid_room_code_msg");
           invalid_room_code_msg_box.style.display = "block";
-          return console.log(result.message);
+          return console.error(result.message);
         }
         this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(false);
+        this.addStudent({
+          id: result.teacherId,
+          name: result.teacherName
+        });
+        this.addStudent({
+          id: this.$socket.id,
+          name: this.userName
+        });
         this.setCurrentStudentId(this.$socket.id);
         this.$router.push({ path: '/room' });
       });
@@ -89,6 +97,7 @@ export default {
           name: this.userName
         });
         this.setCurrentStudentId(this.$socket.id);
+        this.setConnectCode(result.connectCode);
         this.$router.push({ path: '/room'});
       })
     },
@@ -98,10 +107,11 @@ export default {
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(result.isTeacher);
         this.setCurrentStudentId(this.$socket.id);
+        this.setConnectCode(result.connectCode);
         this.$router.push({ path: '/mobile' });
       });
     },
-    ...mapActions(['setRoomCode', 'setIsTeacher', 'setUserName', 'addStudent', 'setCurrentStudentId'])
+    ...mapActions(['setRoomCode', 'setIsTeacher', 'setUserName', 'addStudent', 'setCurrentStudentId', 'setConnectCode'])
   }
 }
 </script>
