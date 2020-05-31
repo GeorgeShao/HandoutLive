@@ -110,40 +110,38 @@
 
       <v-speed-dial
         v-model="fab"
-        :top="top"
-        :bottom="bottom"
-        :right="right"
-        :left="left"
-        :direction="direction"
-        :open-on-hover="hover"
-        :transition="transition"
       >
         <template v-slot:activator>
           <v-btn
-            v-model="fab"
-            color="blue darken-2"
-            dark
             fab
+            v-if="isTeacher"
+            absolute
+            dark
+            style="margin-bottom: 110px"
+            color="blue"
+            bottom
+            left
+            :direction="direction"
+            :open-on-hover="hover"
+            :transition="transition"
           >
             <v-icon v-if="fab">mdi-close</v-icon>
-            <v-icon v-else>mdi-account-circle</v-icon>
+            <v-icon v-else>mdi-pencil</v-icon>
           </v-btn>
         </template>
         <v-btn
           fab
           dark
           small
-          color="green"
+          color="black"
         >
-          <v-icon>mdi-pencil</v-icon>
         </v-btn>
         <v-btn
           fab
           dark
           small
-          color="indigo"
+          color="white"
         >
-          <v-icon>mdi-plus</v-icon>
         </v-btn>
         <v-btn
           fab
@@ -151,7 +149,20 @@
           small
           color="red"
         >
-          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="green"
+        >
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="blue"
+        >
         </v-btn>
       </v-speed-dial>
 
