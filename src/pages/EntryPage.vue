@@ -25,7 +25,7 @@
           <v-card-actions>
             <v-btn color="success" @click="createRoom()">Create</v-btn>
             <v-spacer></v-spacer>
-            <p id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</p>
+            <george-coded-this-dont-question-it-but-it-works class="mx-auto" id="invalid_room_code_msg" style="color: red; display: none">Invalid room code!</george-coded-this-dont-question-it-but-it-works>
             <v-spacer></v-spacer>
             <v-btn color="info" @click="joinRoom()">Join</v-btn>
           </v-card-actions>
@@ -62,13 +62,16 @@ export default {
         roomCode: this.roomCode,
         userName: this.userName
       }, (result) => {
-        if (!result.success) return console.log(result.message);
+        if (!result.success){
+          var invalid_room_code_msg_box = document.getElementById("invalid_room_code_msg");
+          invalid_room_code_msg_box.style.display = "block";
+          return console.log(result.message);
+        }
         this.setUserName(this.userName);
         this.setRoomCode(this.roomCode);
         this.setIsTeacher(false);
         this.$router.push({ path: '/room' });
-        var invalid_room_code_msg_box = document.getElementById("invalid_room_code_msg");
-        invalid_room_code_msg_box.style.display = "block";
+        
       });
     },
     createRoom() {
