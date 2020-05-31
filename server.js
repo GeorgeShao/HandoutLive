@@ -44,6 +44,10 @@ io.on('connection', (socket) => {
     socket.to(userId).emit('addTeacherImage', image);
   });
 
+  socket.on('sendMessage', (roomCode, message) => {
+    socket.to(roomCode).emit('sendMessage', message);
+  });
+
   socket.on('createRoom', ({userName, roomCode}, ack) => {
     if (db.get('rooms').find({ code: roomCode }).value() !== undefined) {
       return ack({success: false, message: "Room already exists."});

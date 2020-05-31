@@ -43,32 +43,20 @@
             height="100%"
             tile
           >
-            <v-list-item two-line>
+            <v-list-item v-for="message in messages" :key="message.id + message.contents + message.sender" two-line>
               <v-list-item-content>
-                <v-list-item-title>John Doe</v-list-item-title>
-                <v-list-item-subtitle>How do you do question #3?</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-list-item two-line>
-              <v-list-item-content>
-                <v-list-item-title>Jane Smith</v-list-item-title>
-                <v-list-item-subtitle>I don't understand question #5</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-list-item two-line>
-              <v-list-item-content>
-                <v-list-item-title>Tommy Chen</v-list-item-title>
-                <v-list-item-subtitle>Can you show me how to do #7?</v-list-item-subtitle>
+                <v-list-item-title>{{message.sender}}</v-list-item-title>
+                <v-list-item-subtitle>{{message.contents}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
             <v-text-field
               label="Solo"
+              v-model="messageField"
               placeholder="Placeholder"
               solo
             ></v-text-field>
+            <v-btn @click="sendMessage()">Send</v-btn>
           </v-card>
         </v-sheet>
       </div>
@@ -100,12 +88,20 @@ export default {
     return {
       studentSidebar: false,
       messageSidebar: false,
-      currentStudentId: this.$store.state.currentStudentId
+      messageField: "",
+      currentStudentId: this.$store.state.currentStudentId,
+      messages: [
+        {
+          id: 0,
+          sender: "PersonalBot",
+          contents: "Welcome to PersonalTeacher!",
+        },
+      ]
     };
   },
   created() {
     if (this.students.length === 0) {
-      this.$router.push({ path: '/' });
+      //this.$router.push({ path: '/' });
     }
   },
   mounted() {
@@ -119,10 +115,13 @@ export default {
       .on('teacherLeft', () => {
         this.resetState();
         this.$router.push({ path: '/' });
+      })
+      .on('sendMessage', (message) => {
+        this.messages.push(message);
       });
   },
   computed: {
-    ...mapState(['students', 'isTeacher', 'roomCode']),
+    ...mapState(['students', 'isTeacher', 'roomCode', 'userName']),
     ...mapGetters(['getLinesByStudentId'])
   },
   methods: {
@@ -142,6 +141,18 @@ export default {
         socket.emit('addTeacherImage', studentId, fileUrl);
       }
     },
+    sendMessage() {
+      if (this.messageField) {
+        const messageObj = {
+          id: Math.floor(Math.random() * 10000),
+          sender: this.userName,
+          contents: this.messageField,
+        }
+        this.messages.push(messageObj);
+        this.$socket.emit('sendMessage', this.roomCode, messageObj);
+        this.messageField = "";
+      }
+    }
   },
   watch: {
     currentStudentId(studentPos) {
