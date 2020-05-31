@@ -1,4 +1,60 @@
 {
-  "rooms": [],
+  "rooms": [
+    {
+      "code": "aa",
+      "students": [],
+      "teacherId": "fcHj-rlbLCkUs5UEAAAG"
+    },
+    {
+      "code": "a",
+      "students": [],
+      "teacherId": "9g0kbVzY9O6kgFdYAAAH"
+    },
+    {
+      "code": "aaa",
+      "students": [],
+      "teacherId": "VN0vtRKg83iwdMoLAAAA"
+    },
+    {
+      "code": "aaaaa",
+      "students": [],
+      "teacher": {
+        "id": "hnXK0cELH5agEPUaAAAA",
+        "deviceId": ""
+      }
+    },
+    {
+      "code": "aaaaaa",
+      "students": [],
+      "teacher": {
+        "id": "KdTHEivttep3ZIo-AAAB",
+        "deviceId": ""
+      }
+    },
+    {
+      "code": "aaoeuaoeuaoe",
+      "students": [],
+      "teacher": {
+        "id": "yQNXl8yh2JojeruZAAAB",
+        "deviceId": ""
+      }
+    },
+    {
+      "code": "aaaaoeouaoeu",
+      "students": [],
+      "teacher": {
+        "id": "MM3357fO8se6pSNwAAAB",
+        "deviceId": ""
+      }
+    },
+    {
+      "code": "aoeuaoeuaoeu",
+      "students": [],
+      "teacher": {
+        "id": "I_IV7idCKnT7IMDOAAAA",
+        "deviceId": ""
+      }
+    }
+  ],
   "users": []
 }

@@ -12,6 +12,7 @@ db.defaults({ rooms: [], users: [] }).write();
 server.listen(port, () => console.log(`App listening at port ${port}`));
 
 io.on('connection', (socket) => {
+  console.log(`User ${socket.id} connected!`);
   socket.on('addLines', (lines, userId) => {
     // Student is drawing lines
     if (!userId) {
@@ -33,12 +34,16 @@ io.on('connection', (socket) => {
     db.get('rooms').push({
       code: roomCode,
       students: [],
-      teacherId: socket.id
+      teacher: {
+        id: socket.id,
+        deviceId: ''
+      }
     }).write();
     return ack({ success: true });
   });
 
   socket.on('joinRoom', (roomCode, ack) => {
+    console.log(`User ${socket.id} joining room ${roomCode}...`);
     const room = db.get('rooms').find({ code: roomCode });
     if (room.value() === undefined) {
       return ack({
@@ -51,6 +56,7 @@ io.on('connection', (socket) => {
     socket.to(teacherId).emit('studentJoined', socket.id);
     room.get('students').push({
       id: socket.id,
+      deviceId: '',
       roomCode
     }).write();
     return ack({ success: true });

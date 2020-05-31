@@ -5,16 +5,37 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isStudentSidebarVisible: false
+    isTeacher: false,
+    roomCode: '',
+    currentStudentId: '',
+    students: []
   },
   mutations: {
-    TOGGLE_STUDENT_SIDEBAR(state, isVisible) {
-      state.isStudentSidebarVisible = isVisible;
+    SET_IS_TEACHER(state, isTeacher) {
+      state.isTeacher = isTeacher;
+    },
+    SET_ROOM_CODE(state, roomCode) {
+      state.roomCode = roomCode;
+    },
+    SET_CURRENT_STUDENT_ID(state, currentStudentId) {
+      state.currentStudentId = currentStudentId;
+    },
+    ADD_STUDENT(state, student) {
+      state.students.push(student);
     }
   },
   actions: {
-    toggleStudentSidebar({ commit }, isVisible) {
-      commit('TOGGLE_STUDENT_SIDEBAR', isVisible);
+    setIsTeacher({ commit }, isTeacher) {
+      commit('SET_IS_TEACHER', isTeacher);
+    },
+    setRoomCode({ commit }, roomCode) {
+      commit('SET_ROOM_CODE', roomCode);
+    },
+    setCurrentStudentId({ commit }, currentStudentId) {
+      commit('SET_CURRENT_STUDENT_ID', currentStudentId);
+    },
+    addStudent({ commit }, studentId) {
+      commit('ADD_STUDENT', { id: studentId, lines: [] });
     }
   },
   modules: {

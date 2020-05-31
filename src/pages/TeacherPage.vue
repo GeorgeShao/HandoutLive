@@ -8,33 +8,47 @@
     </v-app-bar>
 
     <v-navigation-drawer app v-model="studentSidebar">
-      <v-divider/>
-      <template v-slot:prepend>
-        <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-title>Room Code: MAH IEM</v-list-item-title>
-            <v-list-item-subtitle>Share this with your students</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
+      <v-list>
+        <v-subheader>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>Room Code: MAH IEM</v-list-item-title>
+              <v-list-item-subtitle>Share this with your students</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-subheader>
 
-      <v-divider/>
+        <v-divider />
 
-      <v-list-item two-line>
-        <v-list-item-avatar>
-          <img src="https://randomuser.me/api/portraits/women/81.jpg">
-        </v-list-item-avatar>
+        <v-list-item-group value="currentStudentId" @input="setCurrentStudent">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>YOU</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
 
-        <v-list-item-content>
-          <v-list-item-title>Jane Smith</v-list-item-title>
-          <v-list-item-subtitle>Logged In</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+          <v-list-item v-if="students.length === 0">
+            <v-list-item-content>
+              No students have joined yet...
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-for="(student, index) in students" :key="index">
+            <v-list-item-content>
+              <v-list-item-title>{{ student.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
     </v-navigation-drawer>
 
     <v-content style="overflow: hidden">
       <div class="wrapper">
-        <DrawingCanvas ref="drawingCanvas"/>
+
+        <DrawingCanvas ref="drawingCanvas" v-if="currentStudentId" />
+        <v-card v-else class="ma-auto pa-5">
+          Select a student to get started!
+        </v-card>
+
         <v-sheet>
           <v-card
             class="mx-auto"
@@ -80,24 +94,47 @@
         left
         style="margin-bottom: 40px"
         color="blue"
-        @click="uploadImage()"
+        @click="openUploadFileDialog()"
       >
         <v-icon>mdi-upload</v-icon>
       </v-btn>
+      
     </v-content>
   </v-app>
 </template>
 <script>
-  import DrawingCanvas from '../components/DrawingCanvas';
+import DrawingCanvas from '../components/DrawingCanvas';
+import { mapState, mapActions } from 'vuex';
 
-  export default {
-    name: 'TeacherPage',
-    components: {DrawingCanvas},
-    data: () => ({
-      studentSidebar: false,
-      messageSidebar: false
-    }),
-    methods: {
+export default {
+  name: 'TeacherPage',
+  components: { DrawingCanvas },
+  data: () => ({
+    studentSidebar: false,
+    messageSidebar: false,
+  }),
+  mounted() {
+    this.$socket.on('studentJoined', (studentId) => {
+      this.addStudent(studentId);
+    });
+  },
+  computed: mapState(['currentStudentId', 'students']),
+  methods: {
+    ...mapActions(['addStudent']),
+    setCurrentStudent(student) {
+      console.log(student);
+    },
+    openUploadFileDialog() {
+      var fileSelector = document.createElement('input');
+      fileSelector.setAttribute('type', 'file');
+      fileSelector.click();
+      fileSelector.addEventListener("change", handleFiles, false);
+      function handleFiles() {
+        var fileData = this.files[0];
+        console.log("fileData:", fileData)
+      }
+    },
+
       uploadImage() {
         const file = this.$refs.fileInput;
 
@@ -115,8 +152,8 @@
 
         file.click();
       }
-    }
   }
+}
 </script>
 
 <style>
