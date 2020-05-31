@@ -131,7 +131,6 @@ export default {
       function handleFiles() {
         var fileData = this.files[0];
         canvas.uploadImage(URL.createObjectURL(fileData));
-        console.log("fileData:", fileData);
       }
     },
   },

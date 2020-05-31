@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     paint(prevPos, curPos) {
-      console.log(prevPos, curPos);
       const ctx = this.setCanvasContext();
       ctx.beginPath();
       ctx.moveTo(prevPos.x, prevPos.y);

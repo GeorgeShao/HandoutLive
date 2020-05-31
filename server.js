@@ -12,16 +12,13 @@ db.defaults({ rooms: [], users: [] }).write();
 server.listen(port, () => console.log(`App listening at port ${port}`));
 
 io.on('connection', (socket) => {
-  console.log(`User ${socket.id} connected!`);
 
   socket.on('disconnect', () => {
-    console.log(`User ${socket.id} disconnected!`);
     const roomCode = db.get('users').find({ id: socket.id }).get('roomCode').value();
     const room = db.get('rooms').find({ code: roomCode });
     const teacherId = room.get('teacherId').value();
     db.get('users').remove({ id: socket.id });
     if (teacherId === socket.id) {
-      console.log(`Removing room ${roomCode}`);
       room.get('studentIds').each(studentId => {
         db.get('users').find({ id: studentId }).set('roomCode', '').write();
       });
@@ -34,19 +31,16 @@ io.on('connection', (socket) => {
   });
 
   socket.on('addStudentLines', (userId, lines) => {
-    console.log(`User ${userId} drew lines: ${lines}`);
-    // const roomCode = db.get('users').find({id: userId}).get('roomCode').value();
-    // const teacherId = db.get('rooms').find({code: roomCode}).get('teacherId').value();
-    socket.broadcast.emit('addStudentLines', userId, lines);
+    const roomCode = db.get('users').find({id: userId}).get('roomCode').value();
+    const teacherId = db.get('rooms').find({code: roomCode}).get('teacherId').value();
+    socket.to(teacherId).emit('addStudentLines', userId, lines);
   });
 
   socket.on('addTeacherLines', (userId, lines) => {
-    console.log(`Teacher drew to ${userId} some lines: ${lines}`);
     socket.to(userId).emit('addTeacherLines', lines);
   });
 
   socket.on('createRoom', ({userName, roomCode}, ack) => {
-    console.log(`Attempting to create room with code ${roomCode}...`);
     if (db.get('rooms').find({ code: roomCode }).value() !== undefined) {
       return ack({success: false, message: "Room already exists."});
     }
@@ -68,7 +62,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('joinRoom', ({userName, roomCode}, ack) => {
-    console.log(`User ${socket.id} joining room ${roomCode}...`);
     const room = db.get('rooms').find({ code: roomCode });
     if (room.value() === undefined) {
       return ack({
