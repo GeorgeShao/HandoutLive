@@ -1,159 +1,86 @@
 {
   "rooms": [
     {
-      "code": ";",
-      "studentIds": [
-        "MBlDo7nvzQfGca6QAAAI"
+      "code": "",
+      "students": [
+        {
+          "id": "jK8JMR6hFU-PipwfAAAd",
+          "roomCode": ""
+        },
+        {
+          "id": "WITKX0Z52GF-Q0P5AAAh",
+          "roomCode": ""
+        }
       ],
-      "teacherId": "EpjmaxlNRBiOEjtwAAAJ"
+      "teacherId": "jK8JMR6hFU-PipwfAAAd"
     },
     {
-      "code": "kk",
-      "studentIds": [
-        "JggsInZ_vgkHhty6AAAH"
+      "code": {
+        "roomCode": "",
+        "userName": ""
+      },
+      "students": [
+        {
+          "id": "N8mljMlYdY-ICYc-AAAk",
+          "roomCode": {
+            "roomCode": "",
+            "userName": ""
+          }
+        },
+        {
+          "id": "x6NodZAgz1k42tt4AAAy",
+          "roomCode": {
+            "roomCode": "",
+            "userName": ""
+          }
+        },
+        {
+          "id": "-vN3B5LigbOlYPcVAAAw",
+          "roomCode": {
+            "roomCode": "",
+            "userName": ""
+          }
+        }
       ],
-      "teacherId": "-eER5JaN6sZio6KwAAAG"
+      "teacherId": "N8mljMlYdY-ICYc-AAAk"
     },
     {
-      "code": "ka",
+      "code": "kkk",
       "studentIds": [
-        "nuYkMAeB6t8TH9iZAAAD"
+        "oLYoxnVDQ_8qbPEAAAAD"
       ],
-      "teacherId": "Ll1AEIjzeaosf36iAAAC"
-    },
-    {
-      "code": "ai",
-      "studentIds": [],
-      "teacherId": "Bj0vHrJv4sOcjSkaAAAE"
-    },
-    {
-      "code": "dd",
-      "studentIds": [
-        "N2qDTDx0kcVZ0rHqAAAY"
-      ],
-      "teacherId": "P_mAi9OpVxUSZvphAAAZ"
-    },
-    {
-      "code": "b",
-      "studentIds": [
-        "IIpFO9IXroGT7FRKAAAE"
-      ],
-      "teacherId": "e58LQcV3Vyc--6znAAAD"
+      "teacherId": "Smo_wKFOWhtBjOJ-AAAE"
     }
   ],
   "users": [
     {
-      "id": "EpjmaxlNRBiOEjtwAAAJ",
-      "name": ";",
-      "roomCode": ";",
+      "id": "XyQi8Hc5Z6fAb71ZAAAE",
+      "name": "",
+      "roomCode": "aaa",
       "deviceId": ""
     },
     {
-      "id": "BWQdZ-YRnMQMLct2AAAC",
-      "name": "aak",
-      "roomCode": "aak",
+      "id": "rFaMnpZ1ctWbkJvBAAAG",
+      "name": "",
+      "roomCode": "leon",
       "deviceId": ""
     },
     {
-      "id": "-eER5JaN6sZio6KwAAAG",
-      "name": "kk",
-      "roomCode": "kk",
+      "id": "7Pj_n58oX0uwJA8KAAAI",
+      "name": "leon xu",
+      "roomCode": "leon",
       "deviceId": ""
     },
     {
-      "id": "Ll1AEIjzeaosf36iAAAC",
-      "name": "ka",
-      "roomCode": "ka",
+      "id": "BeeMwo3KOa1zs7FSAAAC",
+      "name": "John",
+      "roomCode": "aa",
       "deviceId": ""
     },
     {
-      "id": "JHffHK1VfoCQnkiBAAAC",
-      "name": "aka",
-      "roomCode": "aka",
-      "deviceId": ""
-    },
-    {
-      "id": "Bj0vHrJv4sOcjSkaAAAE",
-      "name": "ai",
-      "roomCode": "ai",
-      "deviceId": ""
-    },
-    {
-      "id": "4OSCdHUG5RJOYlVoAAAH",
-      "name": "kao",
-      "roomCode": "kao",
-      "deviceId": ""
-    },
-    {
-      "id": "L8yUMJgohZIsTATeAAAI",
-      "name": "kaoe",
-      "roomCode": "kaoe",
-      "deviceId": ""
-    },
-    {
-      "id": "KePQS78aYUybnOE3AAAL",
-      "name": "akak",
-      "roomCode": "akak",
-      "deviceId": ""
-    },
-    {
-      "id": "jFspWzr9FGphN2JcAAAN",
-      "name": "a",
-      "roomCode": "kka",
-      "deviceId": ""
-    },
-    {
-      "id": "TdsNN7_34mp2HxckAAAO",
-      "name": "kkaa",
-      "roomCode": "kkaa",
-      "deviceId": ""
-    },
-    {
-      "id": "Zm6JOt13-BsON8_UAAAR",
-      "name": "iai",
-      "roomCode": "iai",
-      "deviceId": ""
-    },
-    {
-      "id": "xqh6p7mq9Tw3ktqWAAAT",
-      "name": "h",
-      "roomCode": "h",
-      "deviceId": ""
-    },
-    {
-      "id": "MllPoevVlavITSNVAAAU",
-      "name": ".",
-      "roomCode": ".",
-      "deviceId": ""
-    },
-    {
-      "id": "P_mAi9OpVxUSZvphAAAZ",
-      "name": "dd",
-      "roomCode": "dd",
-      "deviceId": ""
-    },
-    {
-      "id": "hrVTLtpKan04EgDTAAAB",
-      "name": "x",
-      "roomCode": "x",
-      "deviceId": ""
-    },
-    {
-      "id": "e58LQcV3Vyc--6znAAAD",
-      "name": "b",
-      "roomCode": "b",
-      "deviceId": ""
-    },
-    {
-      "id": "34ACLCxh0LZN_UNLAAAE",
-      "name": "xx",
-      "roomCode": "xx",
-      "deviceId": ""
-    },
-    {
-      "id": "bWN7fcQ745HB1uMbAAAA",
-      "name": "aoeu",
-      "roomCode": "aoeu",
+      "id": "Smo_wKFOWhtBjOJ-AAAE",
+      "name": "aaa",
+      "roomCode": "kkk",
       "deviceId": ""
     }
   ]
