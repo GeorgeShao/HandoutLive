@@ -2,10 +2,10 @@
   <canvas
     class="canvas"
     ref="canvas"
-    @mousedown="onMouseDown"
-    @mousemove="onMouseMove"
-    @mouseleave="endPaintEvent"
-    @mouseup="endPaintEvent"
+    @pointermove="onMouseMove"
+    @pointerdown="onMouseDown"
+    @pointerup="endPaintEvent"
+    @pointerleave="endPaintEvent"
   />
 </template>
 
@@ -49,13 +49,6 @@ export default {
     this.$socket.on('addStudentLines', (studentId, lines) => {
       this.addLines({ id: studentId, lines });
       if (this.currentStudentId === studentId) {
-        this.paintLines(lines);
-      }
-    });
-
-    this.$socket.on('changedCanvas', (lines) => {
-      if (this.isTeacher) {
-        this.clearCanvas();
         this.paintLines(lines);
       }
     });
