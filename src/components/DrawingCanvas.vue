@@ -6,6 +6,10 @@
     @pointerdown="onMouseDown"
     @pointerup="endPaintEvent"
     @pointerleave="endPaintEvent"
+    @touchstart="onTouchStart"
+    @touchmove="onTouchMove"
+    @touchcancel="endPaintEvent"
+    @touchend="endPaintEvent"
   />
 </template>
 
@@ -42,8 +46,8 @@ export default {
       this.paintLines(lines);
     });
 
-    this.$socket.on('addTeacherImage', (image) => {
-      this.uploadImage(image);
+    this.$socket.on('addTeacherImage', async (image) => {
+      await this.uploadImage(image);
     });
 
     this.$socket.on('addStudentLines', (studentId, lines) => {
@@ -106,20 +110,38 @@ export default {
       ctx.lineWidth = this.lineWidth;
       return ctx;
     },
-    uploadImage(url) {
-      const ctx = this.setCanvasContext();
-      const img = new Image();
-      img.src = url;
-      img.onload = function() {
-        ctx.drawImage(img, 0, 0);
-      }
+    async uploadImage(url) {
+      return new Promise((resolve) => {
+        this.setImage(url);
+        const ctx = this.setCanvasContext();
+        const img = new Image();
+        img.src = url;
+        img.onload = function() {
+          ctx.drawImage(img, 0, 0);
+          resolve();
+        }
+      });
     },
     clearCanvas() {
       const canvas = this.$refs.canvas;
       const ctx = this.setCanvasContext();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     },
-    ...mapActions(['addLines']),
+    onTouchStart(event) {
+      const touches = event.changedTouches;
+      this.onMouseDown({
+        offsetX: touches[0].offsetX,
+        offsetY: touches[0].offsetY
+      });
+    },
+    onTouchMove(event) {
+      const touches = event.changedTouches;
+      this.onMouseMove({
+        offsetX: touches[0].offsetX,
+        offsetY: touches[0].offsetY
+      });
+    },
+    ...mapActions(['addLines', 'setImage']),
   },
   computed: {
     ...mapState(['isTeacher', 'currentStudentId', 'userId']),

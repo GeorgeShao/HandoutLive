@@ -10,6 +10,7 @@ const getDefaultState = () => ({
   roomCode: '',
   students: [],
   connectCode: '',
+  image: '',
   // teachers only
   currentStudentId: ''
 });
@@ -48,6 +49,9 @@ export default new Vuex.Store({
     },
     SET_CONNECT_CODE(state, connectCode) {
       state.connectCode = connectCode;
+    },
+    SET_IMAGE(state, image) {
+      state.image = image;
     }
   },
   actions: {
@@ -80,6 +84,9 @@ export default new Vuex.Store({
     },
     setConnectCode({ commit }, connectCode) {
       commit('SET_CONNECT_CODE', connectCode);
+    },
+    setImage({ commit }, image) {
+      commit('SET_IMAGE', image);
     }
   },
   getters: {

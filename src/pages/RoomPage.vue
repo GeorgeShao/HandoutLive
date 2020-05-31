@@ -87,6 +87,7 @@
             <div class="send-message-container">
               <v-textarea
                 solo
+                v-model="messageField"
                 label="Send a message..."
                 class="send-message-box"
                 hide-details
@@ -160,7 +161,7 @@ export default {
 
   },
   computed: {
-    ...mapState(['students', 'isTeacher', 'roomCode', 'userName', 'connectCode']),
+    ...mapState(['students', 'isTeacher', 'roomCode', 'userName', 'connectCode', 'image']),
     ...mapGetters(['getLinesByStudentId', 'getTeacherId']),
   },
   methods: {
@@ -173,7 +174,7 @@ export default {
       const canvas = this.$refs.drawingCanvas;
       const studentId = this.$store.state.currentStudentId;
       const socket = this.$socket;
-      function handleFiles() {
+      async function handleFiles() {
         const fileData = this.files[0];
         const fileUrl = URL.createObjectURL(fileData);
         canvas.uploadImage(fileUrl);
@@ -181,6 +182,7 @@ export default {
       }
     },
     sendMessage() {
+      console.log(this.messageField);
       if (this.messageField) {
         const messageObj = {
           id: Math.floor(Math.random() * 10000),
@@ -194,14 +196,15 @@ export default {
     }
   },
   watch: {
-    currentStudentPos(studentPos) {
+    async currentStudentPos(studentPos) {
       console.log(studentPos);
+      const drawingCanvas = this.$refs.drawingCanvas;
       const ctx = this.$refs.drawingCanvas.$refs.canvas.getContext('2d');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      const drawingCanvas = this.$refs.drawingCanvas;
       const id = this.students[studentPos].id;
       const lines = this.getLinesByStudentId(id);
-      this.$socket.emit('changedCanvas', {lines, studentPos});
+      this.$socket.emit('changedCanvas', {image: this.image, lines, studentPos});
+      await drawingCanvas.uploadImage(this.image);
       lines.forEach(line => drawingCanvas.paint(line.start, line.stop));
       this.setCurrentStudentId(id);
     }
